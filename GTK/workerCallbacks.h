@@ -13,8 +13,6 @@
 #include "TeensyWorker.h"
 #include "CANWorker.h"
 
-#include "ABRSDebug.h"
-
 #define CAN_WORKER_PERIOD_MS 300
 #define RX_MANAGER_PERIOD_MS 100
 
@@ -33,9 +31,5 @@ void cleanUp();
 
 //create objects and register the callbacks
 void registerWorkers();
-
-// added for keyboard button cb
-void pushToNumQ(int key);
-void key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer data);
 
 #endif /* GTK_WORKERCALLBACKS_H_ */

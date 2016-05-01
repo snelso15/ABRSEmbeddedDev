@@ -566,8 +566,7 @@ GTK/TeensyWorker.o: ../GTK/TeensyWorker.cpp ../GTK/TeensyWorker.h \
  ../GTK/../Teensy/teensyCommunicator.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPiSPI.h \
- ../GTK/queueTypes.h ../GTK/miscTypes.h ../GTK/ABRSDebug.h \
- ../GTK/backLightControl.h
+ ../GTK/queueTypes.h ../GTK/miscTypes.h ../GTK/backLightControl.h
 
 ../GTK/TeensyWorker.h:
 
@@ -1708,7 +1707,5 @@ GTK/TeensyWorker.o: ../GTK/TeensyWorker.cpp ../GTK/TeensyWorker.h \
 ../GTK/queueTypes.h:
 
 ../GTK/miscTypes.h:
-
-../GTK/ABRSDebug.h:
 
 ../GTK/backLightControl.h:

@@ -20,9 +20,8 @@ extern int isint;
 int doRent();
 void beginRental();
 void beginReturn();
-//bool kioskBeginRental();
-bool kioskBeginReturn(unsigned int bikeId);
-bool kioskBeginRental(int one_time_code, unsigned int bikeId);
+bool kioskBeginRental();
+bool kioskBeginReturn();
 
 bool is_transaction_complete();
 

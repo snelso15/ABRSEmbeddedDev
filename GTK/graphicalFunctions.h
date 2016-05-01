@@ -7,7 +7,6 @@
 #include "weatherMonitor.h"
 #include "backendCommunicator.h"
 #include "CommandLineUtils.h"
-#include "PowerSystems.h"
 
 class graphicalFunctions
 {
@@ -44,12 +43,6 @@ class graphicalFunctions
 		gint uiPageNum = 0;
 		gchar key = 'z';
 
-		std::string currentTemp = "";
-		std::string currentWeatherForecast = "";
-		std::string highTemp = "";
-		std::string lowTemp = "";
-		std::string weatherIconName = "";
-
 	public:
 
 		graphicalFunctions(void);
@@ -66,13 +59,13 @@ class graphicalFunctions
 		gint drawOnlineCodePage(void);
 		gint drawOnlineCodePage(std::string code);
 		gint drawSubmitPage(void);
-		gint drawSuccessPage(unsigned int);
+		gint drawSuccessPage(void);
 		gint drawFailurePage(void);
 		gint printSomething(void);
 		gint drawInfoPage(void);
 		gint drawWeatherPage(void);
 		gint drawAdminPage(void);
-		gint drawReturnPage(unsigned int);
+		gint drawReturnPage(void);
 		gint drawAdvertisementsPage(void);
 		//static gint key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer* data);
 		static void destroy_window( GtkWidget *widget,gpointer  pointer );
@@ -94,30 +87,6 @@ class graphicalFunctions
 			uiPageNum = val;
 		}
 
-		void setCurrentTemp(std::string temp) {
-			currentTemp = temp;
-		}
-
-		void setcurrentWeatherForecast(std::string forecast) {
-			currentWeatherForecast = forecast;
-		}
-
-		void setHighTemp(std::string high) {
-			highTemp = high;
-		}
-
-		void setLowTemp(std::string low) {
-			lowTemp = low;
-		}
-
-		void setWeatherIconName(std::string name) {
-			weatherIconName = name;
-		}
-
-//		constexpr unsigned int str2int(const char* str, int h = 0)
-//		{
-//		    return !str[h] ? 5381 : (str2int(str, h+1)*33) ^ str[h];
-//		}
 };
 
 

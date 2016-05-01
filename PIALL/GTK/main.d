@@ -573,18 +573,18 @@ GTK/main.o: ../GTK/main.cpp \
  /home/snelso/rpi/rootfs/usr/include/curl/multi.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curl.h \
  ../GTK/backendCommunicator.h ../GTK/backendFunctionality.h \
- ../GTK/jsmn/jsmn.h ../GTK/CommandLineUtils.h ../GTK/PowerSystems.h \
+ ../GTK/jsmn/jsmn.h ../GTK/CommandLineUtils.h ../GTK/queueTypes.h \
+ ../GTK/miscTypes.h ../GTK/TeensyWorker.h \
+ ../GTK/../Teensy/teensyCommunicator.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h \
- ../GTK/queueTypes.h ../GTK/miscTypes.h ../GTK/CANWorker.h \
+ /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPiSPI.h \
+ ../GTK/CANWorker.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/MCP25625.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/utils.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANConstants.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/PiSPICommands.h \
- /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPiSPI.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANDataContainers.h \
- /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h \
- ../GTK/ABRSDebug.h ../GTK/TeensyWorker.h \
- ../GTK/../Teensy/teensyCommunicator.h
+ /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h
 
 /home/snelso/rpi/rootfs/usr/include/gtk-3.0/gtk/gtk.h:
 
@@ -1746,13 +1746,17 @@ GTK/main.o: ../GTK/main.cpp \
 
 ../GTK/CommandLineUtils.h:
 
-../GTK/PowerSystems.h:
-
-/home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h:
-
 ../GTK/queueTypes.h:
 
 ../GTK/miscTypes.h:
+
+../GTK/TeensyWorker.h:
+
+../GTK/../Teensy/teensyCommunicator.h:
+
+/home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h:
+
+/home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPiSPI.h:
 
 ../GTK/CANWorker.h:
 
@@ -1764,14 +1768,6 @@ GTK/main.o: ../GTK/main.cpp \
 
 /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/PiSPICommands.h:
 
-/home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPiSPI.h:
-
 /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANDataContainers.h:
 
 /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h:
-
-../GTK/ABRSDebug.h:
-
-../GTK/TeensyWorker.h:
-
-../GTK/../Teensy/teensyCommunicator.h:

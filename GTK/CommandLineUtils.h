@@ -12,13 +12,7 @@
 #include <string>
 
 
-std::string getWifiIP();
-std::string get3gIP();
-std::string getWeatherJSON();
-std::string getTemperature();
-std::string getWeatherForecast(std::string weatherJSON);
-std::string getHighTemperature();
-std::string getLowTemperature();
-std::string getWeatherIcon();
+std::string getIP();
+
 
 #endif /* GTK_COMMANDLINEUTILS_H_ */

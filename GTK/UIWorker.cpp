@@ -15,33 +15,7 @@ UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsy
 	this->backendQ = backendQ;
 	this->uistate = state;
 	this->rentalCode = new std::string;
-	init_battery_comms();
 	initUI();
-
-	weatherJSON = getWeatherJSON();
-
-	printf("From UIWorker -- weatherJSON is\n%s",weatherJSON.data());
-
-
-	currentWeatherTemperature = getTemperature();
-	gf->setCurrentTemp(currentWeatherTemperature);
-
-	currentWeatherForecast = getWeatherForecast(weatherJSON);
-	printf("From UI Worker:::%s\n", currentWeatherForecast.data());
-	gf->setcurrentWeatherForecast(currentWeatherForecast);
-
-	todaysHighTemperature = getHighTemperature();
-	printf("From UI Worker:::%s\n", todaysHighTemperature.data());
-	gf->setHighTemp(todaysHighTemperature);
-
-	todaysLowTemperature = getLowTemperature();
-	printf("From UI Worker:::%s\n", todaysLowTemperature.data());
-	gf->setLowTemp(todaysLowTemperature);
-
-	weatherIconName = getWeatherIcon();
-	printf("From UI Worker:::%s\n", weatherIconName.data());
-	gf->setWeatherIconName(weatherIconName);
-
 	gf->setuiPageNum(gf->drawAdvertisementsPage());
 }
 
@@ -57,14 +31,6 @@ void UIWorker::initUI() {
 //This is the function that updates the UI from a teensy char.  more in-depth logic
 //required (switch statement probably) to handle UI navigation cases
 void UIWorker::updateUI(){
-
-	///////////////
-	//DEBUG
-	logText.clear();
-	logText.append("UpdateUI called");
-	LOG();
-	///////////////
-
 	int uiScreenNum = uistate->pageNum;
 
 	if ((uiScreenNum != 3) && (uiScreenNum != 7))rentalCode->clear();
@@ -74,7 +40,7 @@ void UIWorker::updateUI(){
 	//nested ifs or case statement to inspect uiScreenNum variable and update accordingly
 	if(navQMsg.dataAvailable){
 		if(navQMsg.key == 'r' && (uiScreenNum == 0  || uiScreenNum == 9) ){
-			gf->setuiPageNum(gf->drawReturnPage(navQMsg.bikeID));
+			gf->setuiPageNum(gf->drawReturnPage());
 		} else if (navQMsg.key != 'r'){
 			gf->updateUI(navQMsg.key);
 			numberOfUiIterations = 0;
@@ -111,33 +77,24 @@ void UIWorker::updateUI(){
 		//int number = std::stoi(rentalCode,nullptr,0);
 		int number = atoi(rentalCode->data());
 		printf("int rentalcode is %d\n", number);
-
-		bool rentalSuccess = false;
-		unsigned int bikeID = 0;
-		if(globalCANStat->getRack(1)->bikePresent){
-			rentalSuccess = kioskBeginRental(number, 0xA000);
-			bikeID = 0xA000;
-			if(rentalSuccess) pushToCANQ(1);
-		}
-		else if(globalCANStat->getRack(2)->bikePresent){
-			rentalSuccess = kioskBeginRental(number, 0xA000);
-			bikeID = 0xA000;
-			if(rentalSuccess) pushToCANQ(2);
-		} else{
-			printf("should unlock bike, but no valid bike held!!!!");
-		}
-
+		bool rentalSuccess = kioskBeginRental(number);
 		if (rentalSuccess)
 		{
 			printf("Success\n");
-			gf->setuiPageNum(gf->drawSuccessPage(bikeID));
+			gf->setuiPageNum(gf->drawSuccessPage());
+			pushToCANQ(1);
+			//gf->drawSuccessPage();
 		}
 		else
 		{
 			printf("Failure\n");
 			gf->setuiPageNum(gf->drawFailurePage());
+			//gf->drawFailurePage();
 		}
+
 	}
+
+
 
 	uistate->pageNum = gf->getuiPageNum();
 	// check for ui timeout
@@ -208,8 +165,6 @@ void  UIWorker::pushToCANQ(int id){
 
 void UIWorker::work() {
 	updateUI();
-	periodic_battery_checkup();
-	periodic_status_update();
 }
 
 void UIWorker::manageUiTimeout(bool resetToUi) {

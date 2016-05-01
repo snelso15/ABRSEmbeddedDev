@@ -15,10 +15,6 @@
 #include <stdlib.h>
 #include "backendFunctionality.h"
 #include <string>
-#include "PowerSystems.h"
-#include "CANWorker.h"
-
-#include "ABRSDebug.h"
 
 #define UI_WORKER_PERIOD_MS 150
 #define UI_TIMEOUT_MS 30000
@@ -35,12 +31,6 @@ private:
 	graphicalFunctions *gf;
 	std::string * rentalCode;
 	int numberOfUiIterations;
-	std::string weatherJSON;
-	std::string currentWeatherTemperature;
-	std::string currentWeatherForecast;
-	std::string todaysHighTemperature;
-	std::string todaysLowTemperature;
-	std::string weatherIconName;
 
 	//functions
 	navQData tryPopNavQ();
@@ -55,8 +45,6 @@ private:
 public:
 	UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState *state, graphicalFunctions *gf);
 	~UIWorker();
-
-
 
 	void work();
 };

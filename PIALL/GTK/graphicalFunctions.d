@@ -573,8 +573,7 @@ GTK/graphicalFunctions.o: ../GTK/graphicalFunctions.cpp \
  /home/snelso/rpi/rootfs/usr/include/curl/multi.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curl.h \
  ../GTK/backendCommunicator.h ../GTK/backendFunctionality.h \
- ../GTK/jsmn/jsmn.h ../GTK/CommandLineUtils.h ../GTK/PowerSystems.h \
- /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h
+ ../GTK/jsmn/jsmn.h ../GTK/CommandLineUtils.h
 
 ../GTK/graphicalFunctions.h:
 
@@ -1731,7 +1730,3 @@ GTK/graphicalFunctions.o: ../GTK/graphicalFunctions.cpp \
 ../GTK/jsmn/jsmn.h:
 
 ../GTK/CommandLineUtils.h:
-
-../GTK/PowerSystems.h:
-
-/home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h:

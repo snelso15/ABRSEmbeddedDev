@@ -7,25 +7,16 @@
 
 #include "CANWorker.h"
 
-CANStatus *globalCANStat = new CANStatus;
-
 CANWorker::CANWorker(GAsyncQueue *CANQ, GAsyncQueue *navQ){
 	this->CANQ =CANQ;
 	this->navQ =navQ;
-	this->CANStat = globalCANStat;
+	this->CANStat = new CANStatus;
 	this->rxMsgs = new std::queue <CANMsg>;
 
 	initializeCAN(MASTER_ID, 1);
 }
 
 void CANWorker::processTasks() {
-	///////////////
-	//DEBUG
-	logText.clear();
-	logText.append("CANWorker - process tasks called");
-	LOG();
-	///////////////
-
 	processCANMessages();
 	processInternalMessages();
 	pingStatus();
@@ -76,18 +67,11 @@ void CANWorker::processBikeReturnedNotif(CANMsg msg) {
 	int bikeID = (int)(msg.data[1] << 8) | msg.data[2];
 	CANStat->getRack(msg.senderId)->heldBikeId = bikeID;
 	CANStat->getRack(msg.senderId)->batLevel = msg.data[3];
-	printf("sending bike returned ack to: %i....bike ID that was returned: %i\n", msg.senderId, bikeID);
+	printf("sending bike returned ack to: %i....bike ID that was returned: %i", msg.senderId, bikeID);
 	sendBikeReturnedAck(msg.senderId);
-	//if(bikeID == 32){
-		//returning bike 32 ... aka bike A5
-	if(kioskBeginReturn(0xA000)){
-		pushToNavQ('r', 0xA000);
+	if(kioskBeginReturn()){
+		pushToNavQ('r');
 	}
-//	}else if(bikeID == 16){
-//		if(kioskBeginReturn(0xA000)){
-//			pushToNavQ('r',  0xA000);
-//		}
-//	}
 
 }
 
@@ -110,7 +94,7 @@ void CANWorker::manageAcks() {
 			if(rackStat->ackPhase > ACK_ITERATIONS_BEFORE_TIMEOUT){
 				//tried too many times to receive ack , time to resend the message
 				if(rackStat->ackType == UnlockBikeAck){
-					printf("ackPhase timed out, resending unlockbikereq to: %i\n", i);
+					printf("ackPhase timed out, resending unlockbikereq to: %i", i);
 					sendUnlockBikeReq(i);
 					rackStat->ackPhase = 1;
 				}
@@ -124,7 +108,7 @@ void CANWorker::manageAcks() {
 		if(rackStat->statusPhase){
 			if(rackStat->statusPhase > ACK_ITERATIONS_BEFORE_TIMEOUT){
 				//tried too many times, time to resend the message
-				printf("statusPhase timed out, resending indiv status req to: %i\n", i);
+				printf("statusPhase timed out, resending indiv status req to: %i", i);
 				sendIndivStatusReq(i);
 				rackStat->statusPhase = 1;
 			} else{
@@ -199,10 +183,9 @@ CANQData CANWorker::tryPopCANQ(){
 	}
 }
 
-void CANWorker::pushToNavQ(char key, unsigned int bikeID){
+void CANWorker::pushToNavQ(char key){
 	navQData *navQMsg = new navQData;
 	navQMsg->key = key;
-	navQMsg->bikeID = bikeID;
 	navQMsg->dataAvailable = true;
 	g_async_queue_push(navQ, (gpointer)navQMsg);
 }
