@@ -15,10 +15,14 @@
 #include <queue>
 #include "backendCommunicator.h"
 
+#include "ABRSDebug.h"
+
 
 #define ACK_ITERATIONS_BEFORE_TIMEOUT 20
 #define ITERATIONS_BEFORE_STATUS_PING 20
-#define NUM_RACKS 1
+#define NUM_RACKS 2
+
+
 
 enum CANMsgIdentifier{
 	CANMsgNone = 0,
@@ -73,6 +77,8 @@ struct CANStatus{
 	}
 };
 
+extern CANStatus *globalCANStat;
+
 class CANWorker {
 
 private:
@@ -83,7 +89,7 @@ private:
 
 	//functions
 	CANQData tryPopCANQ();
-	void pushToNavQ(char key);
+	void pushToNavQ(char key, unsigned int bikeID);
 	void processTasks();
 	void processCANMessages();
 	void processInternalMessages();

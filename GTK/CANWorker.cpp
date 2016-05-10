@@ -7,20 +7,56 @@
 
 #include "CANWorker.h"
 
+CANStatus *globalCANStat = new CANStatus;
+
 CANWorker::CANWorker(GAsyncQueue *CANQ, GAsyncQueue *navQ){
 	this->CANQ =CANQ;
 	this->navQ =navQ;
-	this->CANStat = new CANStatus;
+	this->CANStat = globalCANStat;
 	this->rxMsgs = new std::queue <CANMsg>;
 
 	initializeCAN(MASTER_ID, 1);
 }
 
 void CANWorker::processTasks() {
+
+	///////////////
+	//DEBUG
+	logText.append("CW - process can");
+	LOG();
+	///////////////
+
 	processCANMessages();
+
+	///////////////
+	//DEBUG
+	logText.append("CW - process internal");
+	LOG();
+	///////////////
+
 	processInternalMessages();
+
+	///////////////
+	//DEBUG
+	logText.append("CW - ping stat");
+	LOG();
+	///////////////
+
 	pingStatus();
+
+	///////////////
+	//DEBUG
+	logText.append("CW - Manage Acks");
+	LOG();
+	///////////////
+
 	manageAcks();
+
+	///////////////
+	//DEBUG
+	logText.append("CW - Done Iteration");
+	LOG();
+	///////////////
 }
 
 void CANWorker::processUnlockBikeAck(CANMsg msg){
@@ -67,12 +103,15 @@ void CANWorker::processBikeReturnedNotif(CANMsg msg) {
 	int bikeID = (int)(msg.data[1] << 8) | msg.data[2];
 	CANStat->getRack(msg.senderId)->heldBikeId = bikeID;
 	CANStat->getRack(msg.senderId)->batLevel = msg.data[3];
-	printf("sending bike returned ack to: %i....bike ID that was returned: %i", msg.senderId, bikeID);
+	printf("sending bike returned ack to: %i....bike ID that was returned: %i\n", msg.senderId, bikeID);
 	sendBikeReturnedAck(msg.senderId);
-	if(kioskBeginReturn()){
-		pushToNavQ('r');
+	if(kioskBeginReturn(0xA000)){
+		pushToNavQ('r', 0xA000);
+	} else if(kioskBeginReturn(0xA001)){
+		pushToNavQ('r', 0xA001);
+	} else{
+		//pushToNavQ('r', 0xA000); //for now, just pretend it worked anyway
 	}
-
 }
 
 //TODO - add code to process any other internal messages sent to CAN worker... does a customer need to consult kiosk before return?
@@ -94,7 +133,7 @@ void CANWorker::manageAcks() {
 			if(rackStat->ackPhase > ACK_ITERATIONS_BEFORE_TIMEOUT){
 				//tried too many times to receive ack , time to resend the message
 				if(rackStat->ackType == UnlockBikeAck){
-					printf("ackPhase timed out, resending unlockbikereq to: %i", i);
+					printf("ackPhase timed out, resending unlockbikereq to: %i\n", i);
 					sendUnlockBikeReq(i);
 					rackStat->ackPhase = 1;
 				}
@@ -108,7 +147,7 @@ void CANWorker::manageAcks() {
 		if(rackStat->statusPhase){
 			if(rackStat->statusPhase > ACK_ITERATIONS_BEFORE_TIMEOUT){
 				//tried too many times, time to resend the message
-				printf("statusPhase timed out, resending indiv status req to: %i", i);
+				printf("statusPhase timed out, resending indiv status req to: %i\n", i);
 				sendIndivStatusReq(i);
 				rackStat->statusPhase = 1;
 			} else{
@@ -146,19 +185,61 @@ void CANWorker::processCANMessages() {
 }
 
 void CANWorker::manageRXBuffer() {
-	int maxPerIteration = 10;
-	int count = 0;
+//	int maxPerIteration = 10;
+//	int count = 0;
+
+	///////////////
+	//DEBUG
+	logText.append("CW - Pulling buffer");
+	LOG();
+	///////////////
 
 	CANMsg msg;
 
 	int bufNum = isRxMsgPending();
-	while(bufNum){
+
+	///////////////
+	//DEBUG
+	logText.append("CW - bufnum equals ");
+	appendInt(bufNum);
+	logText.append(".");
+	LOG();
+	///////////////
+
+	while(bufNum){ //|| count < maxPerIteration){
 		readCANMsg(bufNum-1, &msg);
-		bufNum = isRxMsgPending();
-		printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
+		///////////////
+		//DEBUG
+		logText.append("CW - pushing msg: ");
+		appendInt(msg.data[0]);
+		logText.append(" ");
+		appendInt(msg.data[1]);
+		logText.append(" ");
+		appendInt(msg.data[2]);
+		logText.append(" ");
+		appendInt(msg.data[3]);
+		logText.append(" ");
+		appendInt(msg.data[4]);
+		logText.append(" ");
+		appendInt(msg.data[5]);
+		logText.append(" ");
+		appendInt(msg.data[6]);
+		logText.append(" ");
+		appendInt(msg.data[7]);
+		logText.append(".");
+		LOG();
+		///////////////
+		//printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
 		rxMsgs->push(msg);
-		count++;
+		//count++;
+		bufNum = isRxMsgPending();
 	}
+
+	///////////////
+	//DEBUG
+	logText.append("CW - done, leaving cb");
+	LOG();
+	///////////////
 }
 
 void CANWorker::runRXBufferManager() {
@@ -183,9 +264,10 @@ CANQData CANWorker::tryPopCANQ(){
 	}
 }
 
-void CANWorker::pushToNavQ(char key){
+void CANWorker::pushToNavQ(char key, unsigned int bikeID){
 	navQData *navQMsg = new navQData;
 	navQMsg->key = key;
+	navQMsg->bikeID = bikeID;
 	navQMsg->dataAvailable = true;
 	g_async_queue_push(navQ, (gpointer)navQMsg);
 }

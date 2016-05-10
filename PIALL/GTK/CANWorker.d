@@ -578,7 +578,7 @@ GTK/CANWorker.o: ../GTK/CANWorker.cpp ../GTK/CANWorker.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curlrules.h \
  /home/snelso/rpi/rootfs/usr/include/curl/easy.h \
  /home/snelso/rpi/rootfs/usr/include/curl/multi.h \
- /home/snelso/rpi/rootfs/usr/include/curl/curl.h
+ /home/snelso/rpi/rootfs/usr/include/curl/curl.h ../GTK/ABRSDebug.h
 
 ../GTK/CANWorker.h:
 
@@ -1745,3 +1745,5 @@ GTK/CANWorker.o: ../GTK/CANWorker.cpp ../GTK/CANWorker.h \
 /home/snelso/rpi/rootfs/usr/include/curl/multi.h:
 
 /home/snelso/rpi/rootfs/usr/include/curl/curl.h:
+
+../GTK/ABRSDebug.h:

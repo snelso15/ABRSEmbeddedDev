@@ -7,9 +7,15 @@
 #include "weatherMonitor.h"
 #include "backendCommunicator.h"
 #include "CommandLineUtils.h"
+#include "PowerSystems.h"
 
 class graphicalFunctions
 {
+#define UI_BUTTON_POSITION_1 120
+#define UI_BUTTON_POSITION_2 220
+#define UI_BUTTON_POSITION_3 320
+#define UI_BUTTON_POSITION_4 420
+
 	private:
 		kioskKeyInput kki;
 
@@ -43,6 +49,16 @@ class graphicalFunctions
 		gint uiPageNum = 0;
 		gchar key = 'z';
 
+		std::string currentTemp = "";
+		std::string currentWeatherForecast = "";
+		std::string highTemp = "";
+		std::string lowTemp = "";
+		std::string weatherIconName = "";
+
+		int bikeRackNumber = 0;
+
+		BIKE_CONDITION_CODE bikeCode = NO_ISSUES;
+
 	public:
 
 		graphicalFunctions(void);
@@ -59,14 +75,17 @@ class graphicalFunctions
 		gint drawOnlineCodePage(void);
 		gint drawOnlineCodePage(std::string code);
 		gint drawSubmitPage(void);
-		gint drawSuccessPage(void);
+		gint drawSuccessPage(unsigned int);
 		gint drawFailurePage(void);
 		gint printSomething(void);
 		gint drawInfoPage(void);
 		gint drawWeatherPage(void);
 		gint drawAdminPage(void);
-		gint drawReturnPage(void);
+		gint drawReturnPage(unsigned int);
 		gint drawAdvertisementsPage(void);
+		gint drawBikeProblemsPage(int rackNumber);
+		gint drawBikeReportProblemProcessingPage(BIKE_CONDITION_CODE code);
+		gint drawBikeReportProblemProcessingSuccessOrErrorPage(std::string successOrError);
 		//static gint key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer* data);
 		static void destroy_window( GtkWidget *widget,gpointer  pointer );
 
@@ -87,6 +106,51 @@ class graphicalFunctions
 			uiPageNum = val;
 		}
 
+		void setCurrentTemp(std::string temp) {
+			currentTemp = temp;
+		}
+
+		void setcurrentWeatherForecast(std::string forecast) {
+			currentWeatherForecast = forecast;
+		}
+
+		void setHighTemp(std::string high) {
+			highTemp = high;
+		}
+
+		void setLowTemp(std::string low) {
+			lowTemp = low;
+		}
+
+		void setWeatherIconName(std::string name) {
+			weatherIconName = name;
+		}
+
+		int getBikeRackNumber(void)
+		{
+			return bikeRackNumber;
+		}
+
+		void setBikeRackNumber(int number)
+		{
+			bikeRackNumber = number;
+		}
+
+
+		BIKE_CONDITION_CODE getBikeProblemCode(void)
+		{
+			return bikeCode;
+		}
+
+		void setBikeProblemCode(BIKE_CONDITION_CODE code)
+		{
+			bikeCode = code;
+		}
+
+//		constexpr unsigned int str2int(const char* str, int h = 0)
+//		{
+//		    return !str[h] ? 5381 : (str2int(str, h+1)*33) ^ str[h];
+//		}
 };
 
 

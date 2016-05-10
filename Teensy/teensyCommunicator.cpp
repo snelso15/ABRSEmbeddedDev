@@ -31,6 +31,8 @@ uint8_t LETE[4] = {0xFF, 0x45, 0x01, 0x45};
 uint8_t LETF[4] = {0xFF, 0x46, 0x01, 0x46};
 uint8_t LETG[4] = {0xFF, 0x47, 0x01, 0x47};
 uint8_t LETH[4] = {0xFF, 0x48, 0x01, 0x48};
+uint8_t POUND[4] = {0xFF, 0x23, 0x01, 0x23};
+uint8_t STAR[4] = {0xFF, 0x2A, 0x01, 0x2A}; //clear
 
 // channel is the wiringPi name for the chip select (or chip enable) pin.
 // Set this to 0 or 1, depending on how it's connected.
@@ -222,6 +224,17 @@ char* teensyCommunicator::identifyPacket(uint8_t *packet)
             name = "LETH";
             break;
          }
+         case 0x23:
+		  {
+			 name = "POUND";
+			 break;
+		  }
+         case 0x2A:
+		  {
+			 name = "STAR";
+			 break;
+		  }
+
 	 default:
             break;
       }

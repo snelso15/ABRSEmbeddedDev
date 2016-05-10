@@ -15,9 +15,17 @@
 #include <stdlib.h>
 #include "backendFunctionality.h"
 #include <string>
+#include "PowerSystems.h"
+#include "CANWorker.h"
+//#include "workerCallbacks.h"
 
-#define UI_WORKER_PERIOD_MS 150
+extern bool internetUp;
+
+#include "ABRSDebug.h"
+
+#define UI_WORKER_PERIOD_MS 300
 #define UI_TIMEOUT_MS 30000
+#define WEATHER_TIMEOUT_MS 600000
 
 class UIWorker {
 
@@ -30,7 +38,15 @@ private:
 	UIState *uistate;
 	graphicalFunctions *gf;
 	std::string * rentalCode;
+	std::string * adminCode;
 	int numberOfUiIterations;
+	int numberOfWeatherIterations;
+	std::string weatherJSON;
+	std::string currentWeatherTemperature;
+	std::string currentWeatherForecast;
+	std::string todaysHighTemperature;
+	std::string todaysLowTemperature;
+	std::string weatherIconName;
 
 	//functions
 	navQData tryPopNavQ();
@@ -41,10 +57,14 @@ private:
 	void initUI();
 	void updateUI();
 	void manageUiTimeout(bool resetToUi);
+	void updateWeather();
+	void manageWeatherTimeout();
 
 public:
 	UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState *state, graphicalFunctions *gf);
 	~UIWorker();
+
+
 
 	void work();
 };

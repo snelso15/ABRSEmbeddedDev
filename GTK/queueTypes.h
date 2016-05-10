@@ -11,6 +11,7 @@
 struct navQData{
 	char key;
 	int UIScreenWhenRegistered;
+	unsigned int bikeID;
 	bool dataAvailable = false;
 };
 

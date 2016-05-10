@@ -71,7 +71,7 @@ void beginRental() {
     }
 
     system("clear");
-    printf("%s \n", "Processing rental");
+    printf("%s \n", "Processing rental\n");
 
     char bike_id_buffer[1000] = "";
     int i;
@@ -110,7 +110,7 @@ void beginReturn() {
   availableBicycleLength++;
 
   system("clear");
-  printf("%s \n", "Processing return");
+  printf("%s \n", "Processing return\n");
 
   rental_response re = attemptReturn(availableBicycles[availableBicycleLength-1]);
 
@@ -129,74 +129,68 @@ void beginReturn() {
 }
 
 
-bool kioskBeginRental(int one_time_code) {
+int kioskBeginRental(int one_time_code, unsigned int bikeId) {
 
-	bool successfullRent = true;
+	bikeId = bikeId & 0xFF;
 
-    int total_bicycles = 1;
+	char bikeToRent[5];
+	bikeToRent[5];
+	sprintf(bikeToRent, "A00%u", bikeId);
 
-    system("clear");
-    printf("%s \n", "Processing rental");
+    printf("Processing rental, renting bike: %s\n", bikeToRent);
 
-    char bike_id_buffer[1000] = "";
-    int i;
-    for(i = 0; i < total_bicycles; i++) {
-      if( (i+1) == total_bicycles ) {
-	sprintf(bike_id_buffer, "%s%s", bike_id_buffer, availableBicycles[availableBicycleLength-1-i]);
-      } else {
-	sprintf(bike_id_buffer, "%s%s,", bike_id_buffer, availableBicycles[availableBicycleLength-1-i]);
-      }
-    }
-
-    rental_response re = attemptRental(one_time_code, bike_id_buffer);
+    rental_response re = attemptRental(one_time_code, bikeToRent);
+    int successfullRent = 1;
 
     switch(re) {
-      case BAD_CODE:
+    case BAD_CODE:
 	printf("The one-time use code provided was invalid.\n");
-	successfullRent = false;
+	successfullRent = 2;
 	break;
 
-      case SUCCESS:
+    case SUCCESS:
 	printf("Rental successful.\n");
-	availableBicycleLength += (0-total_bicycles);
-	successfullRent = true;
+	successfullRent = 1;
 	break;
 
-      default:
+    default:
 	printf("An unknown error has occured. Please try again.\n");
-	successfullRent = false;
+	successfullRent = 0;
 	break;
     }
 
     return successfullRent;
 }
 
-bool kioskBeginReturn() {
-  bool successfullReturn = true;
-  //printf("Please enter the bike ID: ");
-  //fgets(line, sizeof line, stdin);
+bool kioskBeginReturn(unsigned int bikeId) {
 
-  sscanf("a5", "%s", availableBicycles[availableBicycleLength]);
-  availableBicycleLength++;
 
-  system("clear");
-  printf("%s \n", "Processing return");
+	bikeId = bikeId & 0xFF;
 
-  rental_response re = attemptReturn(availableBicycles[availableBicycleLength-1]);
+	char bikeToReturn[5];
+	sprintf(bikeToReturn, "A00%u", bikeId);
 
-  switch(re) {
-      case SUCCESS:
-	printf("Return successful.\n");
-	successfullReturn = true;
-	break;
+	bool successfullReturn = true;
 
-      default:
-	printf("An unknown error has occured. Please try again.\n");
-	availableBicycleLength--;
-	successfullReturn = false;
-	break;
-    }
+	//sscanf(bikeToReturn, "%s", availableBicycles[availableBicycleLength]);
 
-  return successfullReturn;
+    printf("Processing rental, returning bike: %s\n", bikeToReturn);
+
+	rental_response re = attemptReturn(bikeToReturn);
+
+	switch(re) {
+	  case SUCCESS:
+		  printf("Return successful.\n");
+		  successfullReturn = true;
+		  break;
+
+	  default:
+		  printf("An unknown error has occured. Please try again.\n");
+		  availableBicycleLength--;
+		  successfullReturn = false;
+		  break;
+	}
+
+	return successfullReturn;
 }
 

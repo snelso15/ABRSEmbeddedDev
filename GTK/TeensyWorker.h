@@ -13,7 +13,9 @@
 #include "queueTypes.h"
 #include "miscTypes.h"
 
-#define TEENSY_WORKER_PERIOD_MS 150
+#include "ABRSDebug.h"
+
+#define TEENSY_WORKER_PERIOD_MS 300
 #define BACKLIGHT_TIMEOUT_MS 120000
 
 

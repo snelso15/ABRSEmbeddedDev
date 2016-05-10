@@ -3,6 +3,8 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "kioskKeyInput.h"
+#include <algorithm>
+
 
 int testfoo = 0;
 //int weatherfoo = 0;
@@ -12,6 +14,9 @@ GtkWidget *infoLabel = gtk_label_new(NULL);  // TODO: put in header
 char* infoMessage = "";
 
 GtkWidget *weatherLabel = gtk_label_new(NULL);  // TODO: put in header
+GtkWidget *weatherForecast = gtk_label_new(NULL);
+GtkWidget *weatherTodayHighTempLabel = gtk_label_new(NULL);
+GtkWidget *weatherTodayLowTempLabel = gtk_label_new(NULL);
 GtkWidget *weatherImage;
 GtkWidget *labelInfoPage;
 GtkWidget *RentalSuccessLabel;
@@ -25,8 +30,13 @@ GtkWidget *RentalImageBike2;
 GtkWidget *RentalImageBike3;
 GtkWidget *RentalImageBike4;
 GtkWidget *RentalImageBike5;
-GtkWidget *AdminIpAddressLabel;
+GtkWidget *AdminWifiIpAddressLabel;
+GtkWidget *Admin3gIpAddressLabel;
+GtkWidget *PowerSystemLevelLabel;
 GtkWidget *OnlineCodeLabel;
+GtkWidget *RentalReturnedLabel;
+GtkWidget *bicycleReportProblemSuccessErrorOrLabel;
+
 
 graphicalFunctions::graphicalFunctions(void)
 {
@@ -79,10 +89,10 @@ gint graphicalFunctions::buildUI(){
 	label = gtk_label_new ("0");
 
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Welcome to the</b></span>"); 
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>York College</b></span>");
 	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 15, 0);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>York City Bicycle</b></span>"); 
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>   Bicycle</b></span>");
 	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 100);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Rental System</b></span>"); 
@@ -104,13 +114,13 @@ gint graphicalFunctions::buildUI(){
 
     label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rent</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 120);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_1);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Info</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 220);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Weather</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 15, 320);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 15, UI_BUTTON_POSITION_3);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -129,13 +139,16 @@ gint graphicalFunctions::buildUI(){
   
     label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Report</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 120);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rates</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 220);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_1);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rates</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_2);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Map</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 45, UI_BUTTON_POSITION_3);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Map</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 45, 320);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 45, UI_BUTTON_POSITION_2);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -168,7 +181,7 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -185,7 +198,7 @@ gint graphicalFunctions::buildUI(){
 	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 140);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -213,7 +226,7 @@ gint graphicalFunctions::buildUI(){
 	label = gtk_label_new ("2");
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -224,7 +237,7 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -238,7 +251,7 @@ gint graphicalFunctions::buildUI(){
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("3");
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Please Enter\nOnline Code\n On Keypad</b></span>");
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Enter 4-Digit\nOnline Code\n On Keypad</b></span>");
 	gtk_misc_set_alignment (GTK_MISC(label1), 0.5, 0);
 	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 30);
 	OnlineCodeLabel = gtk_label_new(NULL);
@@ -253,7 +266,7 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -264,18 +277,18 @@ gint graphicalFunctions::buildUI(){
   
     label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Submit</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 120);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_1);
 
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
 
 
   	////////////////////////////////////////////////////////////////////////////
-  	/////////////// rental screen - thank you // TODO
+  	/////////////// rental screen - thank you
   	/////////////////////////////////////////////////////////////////////////////
 
 	////// center rent - thank you //////
@@ -308,7 +321,7 @@ gint graphicalFunctions::buildUI(){
 	label = gtk_label_new ("4");
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>OK</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -329,15 +342,14 @@ gint graphicalFunctions::buildUI(){
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("5");
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>Map</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 250, 0);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>Map</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 250, 0);
 
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>You are Here</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 430);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>You are Here</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 430);
 
-	image = gtk_image_new_from_file("/home/pi/bike_project/location.png");
-	gtk_fixed_put (GTK_FIXED(centerFixed), image, 10, 100);
+
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
@@ -347,7 +359,10 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+	image = gtk_image_new_from_file("/home/pi/bike_project/location.png");
+	gtk_fixed_put (GTK_FIXED(leftFixed), image, 0, 0);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -367,27 +382,27 @@ gint graphicalFunctions::buildUI(){
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("6");
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Report a Problem</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 0);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Report a Problem</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 0);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>We Apologize for the trouble</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 150);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"35\"><b>Which Bicycle Rack</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 150);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>you are experiencing.</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 190);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"35\"><b>has the Problem?</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 190);
 
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Please indicate the area</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 270);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>of inconvenience and we will</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 310);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>attempt to address the problem</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 350);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>in a timely manner.</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 390);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Please indicate the area</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 270);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>of inconvenience and we will</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 310);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>attempt to address the problem</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 350);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>in a timely manner.</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 390);
 
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
@@ -397,14 +412,14 @@ gint graphicalFunctions::buildUI(){
 	label = gtk_label_new ("6");
 
   	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Kiosk</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 35, 100);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rack 1</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 100);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Problem</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 15, 140);
-	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Problem</b></span>");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 15, 140);
+//	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -414,14 +429,17 @@ gint graphicalFunctions::buildUI(){
     rightFixed = gtk_fixed_new();
   
     label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Bicycle</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 45, 100);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rack 2</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_1);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Problem</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 35, 140);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rack 3</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_2);
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rack 4</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_3);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rack 5</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -493,7 +511,7 @@ gint graphicalFunctions::buildUI(){
     leftFixed = gtk_fixed_new();
 	label = gtk_label_new ("8");	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -550,7 +568,15 @@ gint graphicalFunctions::buildUI(){
 	////// center Info //////
 	centerFixed = gtk_fixed_new();
 	labelInfoPage = gtk_label_new ("10");
-	gtk_fixed_put (GTK_FIXED(centerFixed), infoLabel, 0, 50);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>2016 ABRS Team</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 0);
+
+	image = gtk_image_new_from_file("/home/pi/bike_project/Team.png");
+	gtk_fixed_put (GTK_FIXED(centerFixed), image, 0, 100);
+
+	//gtk_fixed_put (GTK_FIXED(centerFixed), infoLabel, 0, 50);
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, labelInfoPage);
 
 	////// left Info///////
@@ -559,10 +585,11 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
-	image = gtk_image_new_from_file("/home/pi/bike_project/ycpLogo.png");
-	gtk_fixed_put (GTK_FIXED(leftFixed), image, 110, 275);
+//	image = gtk_image_new_from_file("/home/pi/bike_project/ycpLogo.png");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), image, 110, 275);
+
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, labelInfoPage);
 
@@ -572,9 +599,9 @@ gint graphicalFunctions::buildUI(){
 	rightFixed = gtk_fixed_new();
 
 
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, labelInfoPage);
 
@@ -585,12 +612,28 @@ gint graphicalFunctions::buildUI(){
 	////// center Weather //////  // TODO
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("11");
-	//gtk_fixed_put (GTK_FIXED(centerFixed), weatherLabel, 0, 50);
+	GtkWidget * degreesF;
+	degreesF = gtk_label_new ("°F");
+	gtk_label_set_markup(GTK_LABEL(degreesF), "<span foreground=\"black\" font=\"50\"><b>°F</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), degreesF, 80, 35);
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
-	weatherImage = gtk_image_new_from_file("/home/pi/bike_project/cloudy.png");
+	weatherImage = gtk_image_new_from_file("/home/pi/bike_project/snowy.png");
 
-	gtk_fixed_put (GTK_FIXED(centerFixed), weatherLabel, 110, 350);
-	gtk_fixed_put (GTK_FIXED(centerFixed), weatherImage, 110, 75);
+	gtk_label_set_line_wrap (GTK_LABEL(weatherForecast),true);
+	gtk_widget_set_size_request (weatherForecast, 640, 200);
+	gtk_label_set_markup(GTK_LABEL(weatherForecast), "<span foreground=\"black\" font=\"40\"><b>°F</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), weatherForecast, 10, 300);
+
+
+	gtk_label_set_markup(GTK_LABEL(weatherTodayHighTempLabel), "<span foreground=\"black\" font=\"60\"><b>°F</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), weatherTodayHighTempLabel, 620, 10);
+
+	gtk_label_set_markup(GTK_LABEL(weatherTodayLowTempLabel), "<span foreground=\"black\" font=\"60\"><b>°F</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), weatherTodayLowTempLabel, 620, 100);
+
+//	gtk_fixed_put (GTK_FIXED(centerFixed), weatherLabel, 110, 350);
+//	gtk_fixed_put (GTK_FIXED(centerFixed), weatherLabel, 10, 10);
+	gtk_fixed_put (GTK_FIXED(centerFixed), weatherImage, 220, 10);
 
 	////// left Weather///////
 	leftFixed = gtk_fixed_new();
@@ -598,7 +641,8 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+	gtk_fixed_put (GTK_FIXED(leftFixed), weatherLabel, 10, 10);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -606,9 +650,9 @@ gint graphicalFunctions::buildUI(){
 	label = gtk_label_new ("11");
 	rightFixed = gtk_fixed_new();
 
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -624,11 +668,18 @@ gint graphicalFunctions::buildUI(){
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>ADMIN</b></span>");
 	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 200, 50);
-	AdminIpAddressLabel = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(AdminIpAddressLabel), "<span foreground=\"black\" font=\"40\"><b>000.000.000.000</b></span>");
-	gtk_fixed_put (GTK_FIXED(centerFixed), AdminIpAddressLabel, 200, 300);
 
+	PowerSystemLevelLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(PowerSystemLevelLabel), "<span foreground=\"black\" font=\"40\"><b>??</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), PowerSystemLevelLabel, 200, 125);
 
+	Admin3gIpAddressLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(Admin3gIpAddressLabel), "<span foreground=\"black\" font=\"40\"><b>000.000.000.000</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), Admin3gIpAddressLabel, 200, 200);
+
+	AdminWifiIpAddressLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(AdminWifiIpAddressLabel), "<span foreground=\"black\" font=\"40\"><b>000.000.000.000</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), AdminWifiIpAddressLabel, 200, 300);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
@@ -638,14 +689,14 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Driver ON</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, 120);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, UI_BUTTON_POSITION_1);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light ON</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 220);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
-	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -656,13 +707,13 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Driver OFF</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, 120);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_1);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light OFF</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, 220);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_2);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -670,24 +721,24 @@ gint graphicalFunctions::buildUI(){
 
 
 	////////////////////////////////////////////////////////////////////////////
-	/////////////// Return Screen //////////////////////////////////
+	/////////////// Return Screen //////////////////////////////////  //screen 13
 
 		////// Center Return //////
 		centerFixed = gtk_fixed_new();
-		label  = gtk_label_new ("13");
+		label  = gtk_label_new (NULL);
 		gtk_fixed_put (GTK_FIXED(centerFixed), label , 0, 50);
 
-		label1 = gtk_label_new(NULL);
-		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Bicycle\nReturned\nThank You</b></span>");
-		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 165, 100);
-		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+		RentalReturnedLabel = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(RentalReturnedLabel), "<span foreground=\"black\" font=\"70\"><b>Bicycle\nReturned\nThank You</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), RentalReturnedLabel, 165, 100);
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, RentalReturnedLabel);
 
 		////// Left Return //////
 		leftFixed = gtk_fixed_new();
 
 		label1 = gtk_label_new(NULL);
 		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>OK</b></span>");
-		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 420);
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 //		image = gtk_image_new_from_file("/home/pi/bike_project/ycpLogo.png");
 //		gtk_fixed_put (GTK_FIXED(leftFixed), image, 110, 275);
@@ -699,10 +750,140 @@ gint graphicalFunctions::buildUI(){
 
 		label1 = gtk_label_new(NULL);
 		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, 420);
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
 
 		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
+
+		////////////////////////////////////////////////////////////////////////////
+		/////////////// Bicycle Report Problem screen
+		/////////////////////////////////////////////////////////////////////////////
+
+		////// center Bicycle Report Problem //////
+		centerFixed = gtk_fixed_new();
+		label = gtk_label_new ("14");
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Bicycle Problem</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 200, 50);
+
+
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+		////// left Bicycle Report Problem ///////
+		leftFixed = gtk_fixed_new();
+		label = gtk_label_new ("14");
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Tire</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, UI_BUTTON_POSITION_1);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Seat</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Wheel</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_3);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Pedal</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+		////// right Bicycle Report Problem //////
+		label = gtk_label_new ("14");
+		rightFixed = gtk_fixed_new();
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Brake</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_1);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Other</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_2);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
+
+		////////////////////////////////////////////////////////////////////////////
+		/////////////// Bicycle Report Problem Processing Screen //////////////////////////////////  //screen 15
+
+		////// center Bicycle Report Problem Processing //////
+		centerFixed = gtk_fixed_new();
+		label = gtk_label_new ("15");
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Reporting Bicycle \nProblem \n Please Wait</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 200, 50);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+		////// left Bicycle Report Problem Processing ///////
+		leftFixed = gtk_fixed_new();
+		label = gtk_label_new ("15");
+
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Tire</b></span>");
+//		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, UI_BUTTON_POSITION_1);
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Seat</b></span>");
+//		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Wheel</b></span>");
+//		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_3);
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Pedal</b></span>");
+//		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+		////// rightBicycle Report Problem Processing //////
+		label = gtk_label_new ("15");
+		rightFixed = gtk_fixed_new();
+
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Brake</b></span>");
+//		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_1);
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Other</b></span>");
+//		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_2);
+//		label1 = gtk_label_new(NULL);
+//		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+//		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
+		////////////////////////////////////////////////////////////////////////////
+		/////////////// Bicycle Report Problem Success/Error Screen //////////////////////////////////  //screen 16
+
+		////// center Bicycle Report Problem Success/Error //////
+		centerFixed = gtk_fixed_new();
+		label = gtk_label_new ("16");
+		bicycleReportProblemSuccessErrorOrLabel = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(bicycleReportProblemSuccessErrorOrLabel), "<span foreground=\"black\" font=\"55\"><b>Reporting Bicycle \nProblem \n Please Wait</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), bicycleReportProblemSuccessErrorOrLabel, 200, 50);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+		////// left Bicycle Report Problem Success/Error ///////
+		leftFixed = gtk_fixed_new();
+		label = gtk_label_new ("16");
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Okay</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+		////// rightBicycle Report Problem Success/Error //////
+		label = gtk_label_new ("16");
+		rightFixed = gtk_fixed_new();
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////// disable notebook tab headers
@@ -724,7 +905,7 @@ gint graphicalFunctions::buildUI(){
 
 
     // uncomment to disable window widget borders
-    //gtk_window_set_decorated (GTK_WINDOW (window), FALSE);
+    gtk_window_set_decorated (GTK_WINDOW (mainWindow), FALSE);
 
     //kioskKeyInput kki();
     //g_signal_connect(G_OBJECT(mainWindow), "key_press_event", G_CALLBACK(key_press_cb), (gpointer) &kki);
@@ -854,8 +1035,23 @@ gint graphicalFunctions::drawSubmitPage(void)
 	return uiPageNum;
 }
 
-gint graphicalFunctions::drawSuccessPage(void)
+gint graphicalFunctions::drawSuccessPage(unsigned int bikeID)
 {
+	char bikeIDString[10];
+	sprintf(bikeIDString, "%x", bikeID);
+	std::string wholeMessage;
+
+	wholeMessage.append("Bike ");
+	wholeMessage.append(bikeIDString);
+	wholeMessage.append("\nIs Unlocked\nSafe Travels");
+
+	gtk_label_set_text(GTK_LABEL(RentalSuccessLabel), wholeMessage.data()); //g_print("g\n");
+	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, wholeMessage.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(RentalSuccessLabel), markup);
+	g_free (markup);
+
+
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 4);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 4);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 4);
@@ -886,7 +1082,8 @@ gint graphicalFunctions::drawInfoPage(void)
 	}
 	else
 	{
-		infoMessage = "blah blah blah blah \nblah blah blah blah \nstudents of";// g_print("d\n");
+		//infoMessage = "blah blah blah blah \nblah blah blah blah \nstudents of";// g_print("d\n");
+		infoMessage = "Proudly designed and\nbuilt by engineering\nstudents of"; //g_print("c\n");
 	}
 	//g_print("e\n");
 	const char *mmessage = infoMessage; //g_print("f\n");
@@ -909,68 +1106,175 @@ gint graphicalFunctions::drawInfoPage(void)
 
 gint graphicalFunctions::drawWeatherPage(void) // TODO
 {
-//
-	std::string theweather = weather();
+	bool weatherError = false;
 
-	printf("\n\nfrom graphical functions, weathertext: %s\n\n", theweather.data());
+	std::string theweather;
 
-	gtk_label_set_text(GTK_LABEL(weatherLabel), theweather.data()); //g_print("g\n");
-	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
-	char* markup = g_markup_printf_escaped(format, theweather.data());// g_print("i\n");
-	gtk_label_set_markup(GTK_LABEL(weatherLabel), markup);
-	g_free (markup);
-//
-////	//sleep(500);
-	int weatherfoo = 3;
-//
-//	if (weatherfoo > 5) weatherfoo = 0;
-//
-//	//g_print("weatherfoo = %i\n", weatherfoo);
-//
-	switch (weatherfoo)
+	if (weatherError)
 	{
-		case 0:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/cloudy.png");
-			break;
-		case 1:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/partly_cloudy.png");
-			break;
-		case 2:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_lightning.png");
-			break;
-		case 3:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_rain.png");
-			break;
-		case 4:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_snow.png");
-			break;
-		case 5:
-			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/sunny.png");
-			break;
-		default:
-			break;
+		theweather = "Temporarily\nOut of Order";
+
+		gtk_label_set_text(GTK_LABEL(weatherLabel), theweather.data()); //g_print("g\n");
+		const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
+		char* markup = g_markup_printf_escaped(format, theweather.data());// g_print("i\n");
+		gtk_label_set_markup(GTK_LABEL(weatherLabel), markup);
+		g_free (markup);
 	}
-	printf("line 863\n");
+	else
+	{
+
+	//	std::string theweather = weather();
+		//std::string theweather = getTemperature();
+
+		std::string lowT;
+		std::string highT;
+	//	lowT.append("L ");
+		lowT.append(lowTemp);
+		lowT.erase(std::remove(lowT.begin(), lowT.end(), '\n'), lowT.end());
+		lowT.append("°");
+		lowT.append("F");
+
+	//	highT.append("H ");
+		highT.append(highTemp);
+		highT.erase(std::remove(highT.begin(), highT.end(), '\n'), highT.end());
+		highT.append("°");
+		highT.append("F");
+
+
+		std::string theweather = currentTemp;
+		std::string iconName;
+		iconName.append(weatherIconName);
+		iconName.erase(std::remove(iconName.begin(), iconName.end(), '\n'), iconName.end());
+
+
+	//	printf("\n\nfrom graphical functions, weathertext: %s\n\n", theweather.data());
+		printf("\n\nfrom UIWorker, weathertext: %s\n\n", theweather.data());
+
+		printf("\n\nfrom UIWorker, Forecast: %s\n\n", currentWeatherForecast.data());
+
+
+		gtk_label_set_text(GTK_LABEL(weatherLabel), theweather.data()); //g_print("g\n");
+		const char *format = "<span foreground=\"black\" font=\"100\"><b>%s</b></span>"; //g_print("h\n");
+		char* markup = g_markup_printf_escaped(format, theweather.data());// g_print("i\n");
+		gtk_label_set_markup(GTK_LABEL(weatherLabel), markup);
+		g_free (markup);
+
+
+		gtk_label_set_text(GTK_LABEL(weatherForecast), currentWeatherForecast.data()); //g_print("g\n");
+		const char *format2 = "<span foreground=\"black\" font=\"35\"><b>%s</b></span>"; //g_print("h\n");
+		char* markup2 = g_markup_printf_escaped(format2, currentWeatherForecast.data());// g_print("i\n");
+		gtk_label_set_markup(GTK_LABEL(weatherForecast), markup2);
+		g_free (markup2);
+
+
+		gtk_label_set_text(GTK_LABEL(weatherTodayHighTempLabel), highT.data()); //g_print("g\n");
+		const char *format3 = "<span foreground=\"black\" font=\"60\"><b>%s</b></span>"; //g_print("h\n");
+		char* markup3 = g_markup_printf_escaped(format3, highT.data());// g_print("i\n");
+		gtk_label_set_markup(GTK_LABEL(weatherTodayHighTempLabel), markup3);
+		g_free (markup3);
+
+		gtk_label_set_text(GTK_LABEL(weatherTodayLowTempLabel), lowT.data()); //g_print("g\n");
+		const char *format4 = "<span foreground=\"black\" font=\"60\"><b>%s</b></span>"; //g_print("h\n");
+		char* markup4 = g_markup_printf_escaped(format4, lowT.data());// g_print("i\n");
+		gtk_label_set_markup(GTK_LABEL(weatherTodayLowTempLabel), markup4);
+		g_free (markup4);
+
+
+
+
+
+//		switch(str2int(iconName))
+//		{
+//		case str2int("clear"):
+//		{
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/weatherIcons/sunny.png");
+//		}
+//		break;
+//		default:
+//			break;
+//		}
+
+		gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/weatherIcons/sunny.png");
+
+
+	}
+//	int weatherfoo = 3;
+//
+//	switch (weatherfoo)
+//	{
+//		case 0:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/cloudy.png");
+//			break;
+//		case 1:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/partly_cloudy.png");
+//			break;
+//		case 2:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_lightning.png");
+//			break;
+//		case 3:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_rain.png");
+//			break;
+//		case 4:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/storm_snow.png");
+//			break;
+//		case 5:
+//			gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/sunny.png");
+//			break;
+//		default:
+//			break;
+//	}
+//	printf("line 863\n");
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 11);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 11);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 11);
     gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
     //weatherfoo++;
-    printf("line 868\n");
+   // printf("line 868\n");
     //return uiPageNum;
     return 11;
 }
 
 gint graphicalFunctions::drawAdminPage(void)
 {
-	std::string ip =  getIP();
-	printf("from graphicalfunctions, drawing admin page, ip: %s\n", ip.data());
+	// start power code
+	int battPercentInt = getBatteryPercentage();
+	char battPercentString[100];
 
-	gtk_label_set_text(GTK_LABEL(AdminIpAddressLabel),  ip.data()); //g_print("g\n");
-	const char *format = "<span foreground=\"black\" font=\"40\"><b>%s</b></span>"; //g_print("h\n");
-	char* markup = g_markup_printf_escaped(format, ip.data());// g_print("i\n");
-	gtk_label_set_markup(GTK_LABEL(AdminIpAddressLabel), markup);
-	g_free (markup);
+	//char* buffer = ... allocate a buffer ...
+
+	printf("From getBatterPercentage() -- battPercentInt = %d\n", battPercentInt);
+
+	sprintf(battPercentString, "%d", battPercentInt);
+	printf("From sprintf -- battPercentString = %s\n", battPercentString);
+
+	gtk_label_set_text(GTK_LABEL(PowerSystemLevelLabel),  battPercentString); //g_print("g\n");
+	const char *format1 = "<span foreground=\"black\" font=\"40\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup1 = g_markup_printf_escaped(format1, battPercentString);// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(PowerSystemLevelLabel), markup1);
+	g_free (markup1);
+
+	// end power code
+
+
+	//std::string threegIP =  get3gIP();
+	std::string threegIP =  "3G Offline";
+	printf("from graphicalfunctions, drawing admin page, ip: %s\n", threegIP.data());
+
+	gtk_label_set_text(GTK_LABEL(Admin3gIpAddressLabel),  threegIP.data()); //g_print("g\n");
+	const char *format2 = "<span foreground=\"black\" font=\"40\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup2 = g_markup_printf_escaped(format2, threegIP.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(Admin3gIpAddressLabel), markup2);
+	g_free (markup2);
+
+
+	std::string wifiIP =  getWifiIP();
+	printf("from graphicalfunctions, drawing admin page, ip: %s\n", wifiIP.data());
+
+	gtk_label_set_text(GTK_LABEL(AdminWifiIpAddressLabel),  wifiIP.data()); //g_print("g\n");
+	const char *format3 = "<span foreground=\"black\" font=\"40\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup3 = g_markup_printf_escaped(format3, wifiIP.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(AdminWifiIpAddressLabel), markup3);
+	g_free (markup3);
 	//AdminIpAddressLabel
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 12);
@@ -981,8 +1285,21 @@ gint graphicalFunctions::drawAdminPage(void)
     return uiPageNum;
 }
 
-gint graphicalFunctions::drawReturnPage(void)
+gint graphicalFunctions::drawReturnPage(unsigned int bikeID)
 {
+	char bikeIDString[10];
+	sprintf(bikeIDString, "%x", bikeID);
+	std::string wholeMessage;
+
+	wholeMessage.append("Bike ");
+	wholeMessage.append(bikeIDString);
+	wholeMessage.append("\nwas returned,\nThank you!");
+
+	gtk_label_set_text(GTK_LABEL(RentalReturnedLabel), wholeMessage.data()); //g_print("g\n");
+	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, wholeMessage.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(RentalReturnedLabel), markup);
+	g_free (markup);
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 13);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 13);
@@ -994,7 +1311,6 @@ gint graphicalFunctions::drawReturnPage(void)
 
 gint graphicalFunctions::drawAdvertisementsPage(void)
 {
-
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 9);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 9);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 9);
@@ -1002,6 +1318,48 @@ gint graphicalFunctions::drawAdvertisementsPage(void)
 
     return uiPageNum;
 }
+
+gint graphicalFunctions::drawBikeProblemsPage(int rackNumber)
+{
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 14);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 14);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 14);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
+gint graphicalFunctions::drawBikeReportProblemProcessingPage(BIKE_CONDITION_CODE code)
+{
+	setBikeProblemCode(code);
+
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 15);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 15);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 15);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
+
+gint graphicalFunctions::drawBikeReportProblemProcessingSuccessOrErrorPage(std::string successOrError)
+{
+	//  bicycleReportProblemSuccessErrorOrLabel
+
+	gtk_label_set_text(GTK_LABEL(bicycleReportProblemSuccessErrorOrLabel), successOrError.data()); //g_print("g\n");
+	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, successOrError.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(bicycleReportProblemSuccessErrorOrLabel), markup);
+	g_free (markup);
+
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 16);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 16);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 16);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
 
 
 gint graphicalFunctions::printSomething(void)
@@ -1065,16 +1423,16 @@ void graphicalFunctions::updateUI(char key){
 					setuiPageNum(drawReportProblemPage());
             		key = 'z';
 					break;
-				case 'f':
-					break;
-				case 'g':  // Map
+				case 'f':  // Map
 					setuiPageNum(drawMapPage());
             		key = 'z';
 					break;
-				case 'h':  // Admin
-					setuiPageNum(drawAdminPage());
-					key = 'z';
+				case 'g':
 					break;
+//				case 'h':  // Admin
+//					setuiPageNum(drawAdminPage());
+//					key = 'z';
+//					break;
 				default:
 					break;
 			}
@@ -1100,10 +1458,10 @@ void graphicalFunctions::updateUI(char key){
 					setuiPageNum(drawWelcomePage());
             		key = 'z';
 					break;
-				case 'r': // Draw Return
-					setuiPageNum(drawReturnPage());
-					key = 'z';
-					break;
+//				case 'r': // Draw Return
+//					setuiPageNum(drawReturnPage());
+//					key = 'z';
+//					break;
 				default:
 					break;
 			}
@@ -1134,14 +1492,14 @@ void graphicalFunctions::updateUI(char key){
 					setuiPageNum(drawWelcomePage());
             		key = 'z';
 					break;
-				case 'e':  // submit
-					setuiPageNum(drawSubmitPage());
-            		key = 'z';
-					break;
-				case 'h': // Cancel
-					setuiPageNum(drawWelcomePage());
-            		key = 'z';
-					break;
+//				case 'e':  // submit
+//					setuiPageNum(drawSubmitPage());
+//            		key = 'z';
+//					break;
+//				case 'h': // Cancel
+//					setuiPageNum(drawWelcomePage());
+//            		key = 'z';
+//					break;
 				default:  // was the keypad used?
 					break;
 			}
@@ -1176,14 +1534,43 @@ void graphicalFunctions::updateUI(char key){
 		{
 			switch (key)
 			{
+				case 'a':  // Bike 1
+				{
+					setuiPageNum(drawBikeProblemsPage(0));
+					key = 'z';
+					break;
+				}
 				case 'd':  // Back
+				{
 					setuiPageNum(drawWelcomePage());
             		key = 'z';
 					break;
-				case 'h':  // Back
-					setuiPageNum(drawWelcomePage());
+				}
+				case 'e':  // Bike 2
+				{
+					setuiPageNum(drawBikeProblemsPage(1));
+					key = 'z';
+					break;
+				}
+				case 'f':  // Bike 3
+				{
+					setuiPageNum(drawBikeProblemsPage(2));
+					key = 'z';
+					break;
+				}
+
+				case 'g':  // Bike 4
+				{
+					setuiPageNum(drawBikeProblemsPage(3));
+					key = 'z';
+					break;
+				}
+				case 'h':  // Bike 5
+				{
+					setuiPageNum(drawBikeProblemsPage(4));
             		key = 'z';
 					break;
+				}
 				default:
 					break;
 			}
@@ -1193,10 +1580,10 @@ void graphicalFunctions::updateUI(char key){
 			{
 			switch (key)
 			{
-				case 'a':
-					setuiPageNum(drawSuccessPage());
-					key = 'z';
-					break;
+//				case 'a':
+//					setuiPageNum(drawSuccessPage());
+//					key = 'z';
+//					break;
 
 //			case ' ':
 //			{
@@ -1298,12 +1685,12 @@ void graphicalFunctions::updateUI(char key){
 					key = 'z';
 					break;
 				}
-				case 'h':
-				{
-					setuiPageNum(drawWelcomePage());
-					key = 'z';
-					break;
-				}
+//				case 'h':
+//				{
+//					setuiPageNum(drawWelcomePage());
+//					key = 'z';
+//					break;
+//				}
 				default:
 					break;
 			}
@@ -1319,12 +1706,12 @@ void graphicalFunctions::updateUI(char key){
 					key = 'z';
 					break;
 				}
-				case 'h':
-				{
-					setuiPageNum(drawWelcomePage());
-					key = 'z';
-					break;
-				}
+//				case 'h':
+//				{
+//					setuiPageNum(drawWelcomePage());
+//					key = 'z';
+//					break;
+//				}
 				default:
 					break;
 			}
@@ -1341,6 +1728,92 @@ void graphicalFunctions::updateUI(char key){
 					break;
 				}
 				case 'h':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case (13): // Info Page
+		{
+			switch (key)
+			{
+				case 'd':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				case 'h':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case (14): // Problems List Screen
+		{
+			switch (key)
+			{
+				case 'a':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(TIRE));
+					key = 'z';
+					break;
+				}
+				case 'b':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(SEAT));
+					key = 'z';
+					break;
+				}
+				case 'c':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(WHEEL));
+					key = 'z';
+					break;
+				}
+				case 'd':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(PEDAL));
+					key = 'z';
+					break;
+				}
+				case 'e':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(BRAKE));
+					key = 'z';
+					break;
+				}
+				case 'f':
+				{
+					setuiPageNum(drawBikeReportProblemProcessingPage(OTHER));
+					key = 'z';
+					break;
+				}
+				case 'h':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+				}
+		}
+		case (16): // report bike problem success or error screen
+		{
+			switch (key)
+			{
+				case 'd':
 				{
 					setuiPageNum(drawWelcomePage());
 					key = 'z';

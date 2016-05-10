@@ -136,18 +136,48 @@ bool TeensyWorker::tryGetButtonPress(){
 			inChar = keyVal;
 			break;
 		}
+		case 0x23:
+		{
+			inChar = 'P';
+			break;
+		}
+		case 0x2A:
+		{
+			inChar = 'S';
+			break;
+		}
 		default:
 			break;
 	}
 	if(inNum != -1){
 		//only accept number input if on appropriate screen
-		if(uistate->pageNum == 3){
+//		if(uistate->pageNum == 3){
+		if(uistate->pageNum == 3 || uistate->pageNum == 10){   // accept numkeypad presses if on 'info' or 'input rental code' pages
 			//printf("Received a number input on the correct page: %i\n", inNum); //TODO - debug, remove
+
+			////DEBUG
+			logText.append("teensy.cpp -- pushing ");
+			//logText.append(&inChar);
+			appendInt(inNum);
+			logText.append(" to numQ");
+			LOG();
+			/////////////////
+
+
 			pushToNumQ(inNum);
 			return true;
 		}
 		else if(uistate->pageNum == 9)  // if a num key was pressed and we are at the idle screen, fake a nav press
 		{
+
+			////DEBUG
+			logText.append("teensy.cpp -- got number in start screen, pushing a");
+			//logText.append(&inChar);
+			//appendInt(inNum);
+			logText.append(" to navQ");
+			LOG();
+			/////////////////
+
 			pushToNavQ('a');
 			return true;
 		}
@@ -182,6 +212,13 @@ bool TeensyWorker::tryGetButtonPress(){
 				break;
 			}
 		}
+
+		////DEBUG
+		logText.append("teensy.cpp -- pushing ");
+		appendChar(inChar);
+		logText.append(" to navQ");
+		LOG();
+		/////////////////
 		pushToNavQ(inChar);
 		return true;
 	}
@@ -191,6 +228,10 @@ bool TeensyWorker::tryGetButtonPress(){
 }
 
 void TeensyWorker::work() { // TODO extend to support lcd driver board
+	////DEBUG
+	logText.append("teensy.cpp -- trygetbutnpress");
+	LOG();
+	/////////////////
 	manageBacklight(tryGetButtonPress());
 }
 
