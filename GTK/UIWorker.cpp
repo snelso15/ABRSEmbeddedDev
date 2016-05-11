@@ -248,7 +248,7 @@ navQData  UIWorker::tryPopNavQ(){
 	} else {
 		//create copy so you can deallocate memory on heap
 		navQVal = *(navQData *) data;  //TODO - test this line, not sure if it will work
-		delete data;
+		delete (navQData *)data;
 		return navQVal;
 	}
 }
@@ -262,7 +262,7 @@ numQData  UIWorker::tryPopNumQ(){
 	} else {
 		//create copy so you can deallocate memory on heap
 		numQVal = *(numQData *) data;  //TODO - test this line, not sure if it will work
-		delete data;
+		delete (numQData *)data;
 		return numQVal;
 	}
 }
@@ -276,7 +276,7 @@ CANQData  UIWorker::tryPopCANQ(){
 	} else{
 		//create copy so you can deallocate memory on heap
 		CANQVal = *(CANQData *) data;  //TODO - test this line, not sure if it will work
-		delete data;
+		delete (CANQData *) data;
 		return CANQVal;
 	}
 }
@@ -290,7 +290,7 @@ backendQData  UIWorker::tryPopBackendQ(){
 	} else{
 		//create copy so you can deallocate memory on heap
 		backendQVal = *(backendQData *) data;  //TODO - test this line, not sure if it will work
-		delete data; ///deallocate mem on heap
+		delete (backendQData *)data; ///deallocate mem on heap
 		return backendQVal;
 	}
 }

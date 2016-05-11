@@ -259,7 +259,7 @@ CANQData CANWorker::tryPopCANQ(){
 	} else{
 		//create copy so you can deallocate memory on heap
 		CANQVal = *(CANQData *) data;  //TODO - test this line, not sure if it will work
-		delete data;
+		delete (CANQData *)data;
 		return CANQVal;
 	}
 }
