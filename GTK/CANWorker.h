@@ -20,8 +20,7 @@
 
 #define ACK_ITERATIONS_BEFORE_TIMEOUT 20
 #define ITERATIONS_BEFORE_STATUS_PING 20
-#define NUM_RACKS 2
-
+#define NUM_RACKS 5
 
 
 enum CANMsgIdentifier{

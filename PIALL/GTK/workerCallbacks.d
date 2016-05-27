@@ -584,7 +584,7 @@ GTK/workerCallbacks.o: ../GTK/workerCallbacks.cpp \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANDataContainers.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h \
  ../GTK/ABRSDebug.h ../GTK/TeensyWorker.h \
- ../GTK/../Teensy/teensyCommunicator.h
+ ../GTK/../Teensy/teensyCommunicator.h ../GTK/CANThread.h
 
 ../GTK/workerCallbacks.h:
 
@@ -1775,3 +1775,5 @@ GTK/workerCallbacks.o: ../GTK/workerCallbacks.cpp \
 ../GTK/TeensyWorker.h:
 
 ../GTK/../Teensy/teensyCommunicator.h:
+
+../GTK/CANThread.h:

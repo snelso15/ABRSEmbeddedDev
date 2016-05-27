@@ -12,6 +12,7 @@
 #include "UIWorker.h"
 #include "TeensyWorker.h"
 #include "CANWorker.h"
+#include "CANThread.h"
 
 #include "ABRSDebug.h"
 

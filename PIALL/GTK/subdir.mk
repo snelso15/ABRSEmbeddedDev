@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../GTK/ABRSDebug.cpp \
+../GTK/CANThread.cpp \
 ../GTK/CANWorker.cpp \
 ../GTK/CommandLineUtils.cpp \
 ../GTK/PowerSystems.cpp \
@@ -22,6 +23,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./GTK/ABRSDebug.o \
+./GTK/CANThread.o \
 ./GTK/CANWorker.o \
 ./GTK/CommandLineUtils.o \
 ./GTK/PowerSystems.o \
@@ -39,6 +41,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./GTK/ABRSDebug.d \
+./GTK/CANThread.d \
 ./GTK/CANWorker.d \
 ./GTK/CommandLineUtils.d \
 ./GTK/PowerSystems.d \

@@ -1035,15 +1035,23 @@ gint graphicalFunctions::drawSubmitPage(void)
 	return uiPageNum;
 }
 
-gint graphicalFunctions::drawSuccessPage(unsigned int bikeID)
+gint graphicalFunctions::drawSuccessPage(unsigned int bikeID, int racknum)
 {
 	char bikeIDString[10];
 	sprintf(bikeIDString, "%x", bikeID);
+
+	char rackIDString[10];
+	sprintf(rackIDString, "%i", racknum);
+
+
 	std::string wholeMessage;
 
 	wholeMessage.append("Bike ");
 	wholeMessage.append(bikeIDString);
-	wholeMessage.append("\nIs Unlocked\nSafe Travels");
+	wholeMessage.append(" is\n");
+	wholeMessage.append("unlocked in rack ");
+	wholeMessage.append(rackIDString);
+	wholeMessage.append("\nSafe Travels!");
 
 	gtk_label_set_text(GTK_LABEL(RentalSuccessLabel), wholeMessage.data()); //g_print("g\n");
 	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");

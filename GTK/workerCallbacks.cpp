@@ -8,6 +8,7 @@
 #include "workerCallbacks.h"
 #include "CommandLineUtils.h"
 
+
 WorkerContainer *workerContainer = new WorkerContainer;
 bool internetUp;
 
@@ -226,7 +227,11 @@ void registerWorkers() {
 	gdk_threads_add_timeout(CAN_WORKER_PERIOD_MS, CANWorkerCB, cw);
 
 //	gdk_threads_add_timeout(5000, internetPingCB, NULL);
-	gdk_threads_add_timeout(200, CANRxCB, cw);
+
+	//NO!! USE THREAD INSTREAAD
+	//gdk_threads_add_timeout(200, CANRxCB, cw);
+	registerCanThread();
+
 
 	//gdk_threads_add_idle(CANRxCB, cw);
 	//gdk_threads_add_timeout(100 ,CANRxCB, cw);

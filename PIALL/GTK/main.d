@@ -584,7 +584,7 @@ GTK/main.o: ../GTK/main.cpp \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANDataContainers.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h \
  ../GTK/ABRSDebug.h ../GTK/TeensyWorker.h \
- ../GTK/../Teensy/teensyCommunicator.h
+ ../GTK/../Teensy/teensyCommunicator.h ../GTK/CANThread.h
 
 /home/snelso/rpi/rootfs/usr/include/gtk-3.0/gtk/gtk.h:
 
@@ -1775,3 +1775,5 @@ GTK/main.o: ../GTK/main.cpp \
 ../GTK/TeensyWorker.h:
 
 ../GTK/../Teensy/teensyCommunicator.h:
+
+../GTK/CANThread.h:

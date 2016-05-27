@@ -174,25 +174,36 @@ void UIWorker::updateUI(){
 		}
 		int rentalSuccess = 0;
 		//unsigned int bikeID = 0;
+		int bikeUnlockRack = 0;
 		if(bikeId){
 			if(globalCANStat->getRack(1)->bikePresent){
 				rentalSuccess = kioskBeginRental(number, bikeId);
 				if(rentalSuccess) pushToCANQ(1);
+				bikeUnlockRack = 1;
 				//pushToCANQ(1);//brute force it for now
 			}
 			else if(globalCANStat->getRack(2)->bikePresent){
 				rentalSuccess = kioskBeginRental(number, bikeId);
 				if(rentalSuccess) pushToCANQ(2);
+				bikeUnlockRack = 2;
 				//pushToCANQ(2);//brute force it for now
 			}
 			else if(globalCANStat->getRack(3)->bikePresent){
 				rentalSuccess = kioskBeginRental(number, bikeId);
+				bikeUnlockRack = 3;
 				if(rentalSuccess) pushToCANQ(3);
 				//pushToCANQ(3);//brute force it for now
 			}
 			else if(globalCANStat->getRack(4)->bikePresent){
 				rentalSuccess = kioskBeginRental(number, bikeId);
+				bikeUnlockRack = 4;
 				if(rentalSuccess) pushToCANQ(4);
+				//pushToCANQ(4);//brute force it for now
+			}
+			else if(globalCANStat->getRack(5)->bikePresent){
+				rentalSuccess = kioskBeginRental(number, bikeId);
+				if(rentalSuccess) pushToCANQ(5);
+				bikeUnlockRack = 5;
 				//pushToCANQ(4);//brute force it for now
 			}
 		}
@@ -200,7 +211,7 @@ void UIWorker::updateUI(){
 		if (numbikes && rentalSuccess == 1)
 		{
 			printf("Success\n");
-			gf->setuiPageNum(gf->drawSuccessPage(bikeId));
+			gf->setuiPageNum(gf->drawSuccessPage(bikeId, bikeUnlockRack));
 			if(numbikes == 2){
 				numbikes = 1;
 			}else if(numbikes == 1){
