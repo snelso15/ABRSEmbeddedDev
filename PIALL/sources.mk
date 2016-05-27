@@ -25,6 +25,5 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 CAN \
 GTK \
-GTK/jsmn \
 Teensy \
 

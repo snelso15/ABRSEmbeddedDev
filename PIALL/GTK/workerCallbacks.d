@@ -572,8 +572,8 @@ GTK/workerCallbacks.o: ../GTK/workerCallbacks.cpp \
  /home/snelso/rpi/rootfs/usr/include/curl/easy.h \
  /home/snelso/rpi/rootfs/usr/include/curl/multi.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curl.h \
- ../GTK/backendCommunicator.h ../GTK/backendFunctionality.h \
- ../GTK/jsmn/jsmn.h ../GTK/CommandLineUtils.h ../GTK/PowerSystems.h \
+ ../GTK/backendCommunicator.h ../GTK/backendFunctionality.h ../GTK/jsmn.h \
+ ../GTK/CommandLineUtils.h ../GTK/PowerSystems.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/Deps/wiringPi/wiringPi-from-pi/wiringPi.h \
  ../GTK/queueTypes.h ../GTK/miscTypes.h ../GTK/CANWorker.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/MCP25625.h \
@@ -1742,7 +1742,7 @@ GTK/workerCallbacks.o: ../GTK/workerCallbacks.cpp \
 
 ../GTK/backendFunctionality.h:
 
-../GTK/jsmn/jsmn.h:
+../GTK/jsmn.h:
 
 ../GTK/CommandLineUtils.h:
 

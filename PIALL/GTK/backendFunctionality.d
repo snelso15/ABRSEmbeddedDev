@@ -1,5 +1,5 @@
 GTK/backendFunctionality.d: ../GTK/backendFunctionality.cpp \
- ../GTK/backendFunctionality.h ../GTK/jsmn/jsmn.h \
+ ../GTK/backendFunctionality.h ../GTK/jsmn.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curl.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curlver.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curlbuild.h \
@@ -583,7 +583,7 @@ GTK/backendFunctionality.d: ../GTK/backendFunctionality.cpp \
 
 ../GTK/backendFunctionality.h:
 
-../GTK/jsmn/jsmn.h:
+../GTK/jsmn.h:
 
 /home/snelso/rpi/rootfs/usr/include/curl/curl.h:
 

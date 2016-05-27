@@ -9,7 +9,6 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Teensy/subdir.mk
--include GTK/jsmn/subdir.mk
 -include GTK/subdir.mk
 -include CAN/subdir.mk
 -include subdir.mk

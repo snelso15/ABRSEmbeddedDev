@@ -571,7 +571,7 @@ GTK/CANWorker.o: ../GTK/CANWorker.cpp ../GTK/CANWorker.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/CANDataContainers.h \
  /home/snelso/capstone-workspace/ABRSEmbeddedDev/CAN/ABRSMsgs.h \
  ../GTK/queueTypes.h ../GTK/backendCommunicator.h \
- ../GTK/backendFunctionality.h ../GTK/jsmn/jsmn.h \
+ ../GTK/backendFunctionality.h ../GTK/jsmn.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curl.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curlver.h \
  /home/snelso/rpi/rootfs/usr/include/curl/curlbuild.h \
@@ -1730,7 +1730,7 @@ GTK/CANWorker.o: ../GTK/CANWorker.cpp ../GTK/CANWorker.h \
 
 ../GTK/backendFunctionality.h:
 
-../GTK/jsmn/jsmn.h:
+../GTK/jsmn.h:
 
 /home/snelso/rpi/rootfs/usr/include/curl/curl.h:
 
