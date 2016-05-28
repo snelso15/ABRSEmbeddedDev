@@ -12,6 +12,7 @@
 #include "ABRSMsgs.h"
 #include "queueTypes.h"
 #include <queue>
+#include <semaphore.h>
 
 #include <pthread.h>
 #include <unistd.h>

@@ -9,6 +9,8 @@
 #include "CANThread.h"
 
 pthread_t CANThread;
+sem_t mutex;
+
 
 void manageRxBuffer() {
 	CANMsg msg;
@@ -23,6 +25,7 @@ void manageRxBuffer() {
 	}
 }
 
+
 //returns void* so that you can pass data back to calling function if necessary
 void* CANThreadRoutine(void* nullPointer){
 	while(1){
@@ -31,7 +34,13 @@ void* CANThreadRoutine(void* nullPointer){
 	return NULL ;
 }
 
+
 void registerCanThread(){
+
+	if(0 != sem_init(&mutex, 0, 1)){
+		printf("something went wrong with creating semaphore\n");
+	}
+
 	if(0 != pthread_create(&CANThread, NULL, &CANThreadRoutine, NULL)){
 		printf("something went wrong with creating threads\n");
 	}
