@@ -68,16 +68,16 @@ int CANWorkerCB(gpointer data) {
 	return 1; //callbacks need to return a non zero/negative number to continue registry
 }
 
-int CANRxCB(gpointer data) {
-	///////////////
-	//DEBUG
-	logText.append("CANWORKER CALLBACK FIRED");
-	LOG();
-	///////////////
-	CANWorker *cw = (CANWorker *) data;
-	cw->runRXBufferManager();
-	return 1; //callbacks need to return a non zero/negative number to continue registry
-}
+//int CANRxCB(gpointer data) {
+//	///////////////
+//	//DEBUG
+//	logText.append("CANWORKER CALLBACK FIRED");
+//	LOG();
+//	///////////////
+//	CANWorker *cw = (CANWorker *) data;
+//	cw->runRXBufferManager();
+//	return 1; //callbacks need to return a non zero/negative number to continue registry
+//}
 
 void cleanUp() {
 	delete workerContainer->uiw;

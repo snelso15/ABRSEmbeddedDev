@@ -16,8 +16,8 @@
 
 #include "ABRSDebug.h"
 
-#define CAN_WORKER_PERIOD_MS 350
-#define RX_MANAGER_PERIOD_MS 100
+#define CAN_WORKER_PERIOD_MS 150
+//#define RX_MANAGER_PERIOD_MS 100
 
 
 struct WorkerContainer{

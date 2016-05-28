@@ -23,7 +23,7 @@ extern bool internetUp;
 
 #include "ABRSDebug.h"
 
-#define UI_WORKER_PERIOD_MS 300
+#define UI_WORKER_PERIOD_MS 150
 #define UI_TIMEOUT_MS 30000
 #define WEATHER_TIMEOUT_MS 600000
 

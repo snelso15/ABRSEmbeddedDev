@@ -13,7 +13,7 @@ CANWorker::CANWorker(GAsyncQueue *CANQ, GAsyncQueue *navQ){
 	this->CANQ =CANQ;
 	this->navQ =navQ;
 	this->CANStat = globalCANStat;
-	this->rxMsgs = new std::queue <CANMsg>;
+//	this->rxMsgs = new std::queue <CANMsg>;
 
 	initializeCAN(MASTER_ID, 1);
 }
@@ -159,13 +159,12 @@ void CANWorker::manageAcks() {
 
 CANWorker::~CANWorker() {
 	delete this->CANStat;
-	delete this->rxMsgs;
+//	delete this->rxMsgs;
 }
 
 void CANWorker::processCANMessages() {
-	while(!rxMsgs->empty()){//
-		CANMsg msg = rxMsgs->front();
-		rxMsgs->pop();
+	while(isCANDataAvailable()){//
+		CANMsg msg = popFrontCANMsg();
 		if((int)msg.data[0] == UnlockBikeAck){
 			printf("Received an unlock ack from: %i\n", msg.senderId);
 			processUnlockBikeAck(msg);
@@ -184,67 +183,67 @@ void CANWorker::processCANMessages() {
 	}
 }
 
-void CANWorker::manageRXBuffer() {
-//	int maxPerIteration = 10;
-//	int count = 0;
+//void CANWorker::manageRXBuffer() {
+////	int maxPerIteration = 10;
+////	int count = 0;
+//
+//	///////////////
+//	//DEBUG
+//	logText.append("CW - Pulling buffer");
+//	LOG();
+//	///////////////
+//
+//	CANMsg msg;
+//
+//	int bufNum = isRxMsgPending();
+//
+//	///////////////
+//	//DEBUG
+//	logText.append("CW - bufnum equals ");
+//	appendInt(bufNum);
+//	logText.append(".");
+//	LOG();
+//	///////////////
+//
+//	while(bufNum){ //|| count < maxPerIteration){
+//		readCANMsg(bufNum-1, &msg);
+//		///////////////
+//		//DEBUG
+//		logText.append("CW - pushing msg: ");
+//		appendInt(msg.data[0]);
+//		logText.append(" ");
+//		appendInt(msg.data[1]);
+//		logText.append(" ");
+//		appendInt(msg.data[2]);
+//		logText.append(" ");
+//		appendInt(msg.data[3]);
+//		logText.append(" ");
+//		appendInt(msg.data[4]);
+//		logText.append(" ");
+//		appendInt(msg.data[5]);
+//		logText.append(" ");
+//		appendInt(msg.data[6]);
+//		logText.append(" ");
+//		appendInt(msg.data[7]);
+//		logText.append(".");
+//		LOG();
+//		///////////////
+//		//printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
+//		rxMsgs->push(msg);
+//		//count++;
+//		bufNum = isRxMsgPending();
+//	}
+//
+//	///////////////
+//	//DEBUG
+//	logText.append("CW - done, leaving cb");
+//	LOG();
+//	///////////////
+//}
 
-	///////////////
-	//DEBUG
-	logText.append("CW - Pulling buffer");
-	LOG();
-	///////////////
-
-	CANMsg msg;
-
-	int bufNum = isRxMsgPending();
-
-	///////////////
-	//DEBUG
-	logText.append("CW - bufnum equals ");
-	appendInt(bufNum);
-	logText.append(".");
-	LOG();
-	///////////////
-
-	while(bufNum){ //|| count < maxPerIteration){
-		readCANMsg(bufNum-1, &msg);
-		///////////////
-		//DEBUG
-		logText.append("CW - pushing msg: ");
-		appendInt(msg.data[0]);
-		logText.append(" ");
-		appendInt(msg.data[1]);
-		logText.append(" ");
-		appendInt(msg.data[2]);
-		logText.append(" ");
-		appendInt(msg.data[3]);
-		logText.append(" ");
-		appendInt(msg.data[4]);
-		logText.append(" ");
-		appendInt(msg.data[5]);
-		logText.append(" ");
-		appendInt(msg.data[6]);
-		logText.append(" ");
-		appendInt(msg.data[7]);
-		logText.append(".");
-		LOG();
-		///////////////
-		//printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
-		rxMsgs->push(msg);
-		//count++;
-		bufNum = isRxMsgPending();
-	}
-
-	///////////////
-	//DEBUG
-	logText.append("CW - done, leaving cb");
-	LOG();
-	///////////////
-}
-
-void CANWorker::runRXBufferManager() {
-	manageRXBuffer();
-}
+//void CANWorker::runRXBufferManager() {
+//	manageRXBuffer();
+//}
 
 void CANWorker::runWorker() {
 	processTasks();

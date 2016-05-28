@@ -13,11 +13,13 @@
 #include "queueTypes.h"
 #include <queue>
 #include <semaphore.h>
-
 #include <pthread.h>
 #include <unistd.h>
 #include <stdio.h>
 
 void registerCanThread();
+CANMsg popFrontCANMsg();
+bool isCANDataAvailable();
+
 
 #endif /* GTK_CANTHREAD_H_ */

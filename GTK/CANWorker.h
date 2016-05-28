@@ -12,8 +12,9 @@
 #include "MCP25625.h"
 #include "ABRSMsgs.h"
 #include "queueTypes.h"
-#include <queue>
+//#include <queue>
 #include "backendCommunicator.h"
+#include "CANThread.h"
 
 #include "ABRSDebug.h"
 
@@ -84,7 +85,7 @@ private:
 	GAsyncQueue *CANQ;
 	GAsyncQueue *navQ;
 	CANStatus *CANStat;
-	std::queue<CANMsg> *rxMsgs;
+//	std::queue<CANMsg> *rxMsgs;
 
 	//functions
 	CANQData tryPopCANQ();
@@ -97,12 +98,12 @@ private:
 	void processBikeReturnedNotif(CANMsg msg);
 	void processStatusResponse(CANMsg msg);
 	void manageAcks();
-	void manageRXBuffer();
+//	void manageRXBuffer();
 	void pingStatus();
 
 
 public:
-	void runRXBufferManager();
+//	void runRXBufferManager();
 	void runWorker();
 	CANWorker(GAsyncQueue *CANQ, GAsyncQueue *navQ);
 	~CANWorker();
