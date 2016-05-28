@@ -11,7 +11,7 @@
 //#endif
 
 #include <stdbool.h>
-#include "jsmn/jsmn.h"
+#include "jsmn.h"
 //#include "jsmn/jsmn.c"
 #include </home/snelso/rpi/rootfs/usr/include/curl/curl.h>
 #include <stdio.h>

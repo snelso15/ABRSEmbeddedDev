@@ -212,6 +212,10 @@ bool TeensyWorker::tryGetButtonPress(){
 				break;
 			}
 		}
+		else if(uistate->pageNum == 9)  // if a enter or clear key was pressed and we are at the idle screen, fake a nav press
+		{
+			pushToNavQ('a');
+		}
 
 		////DEBUG
 		logText.append("teensy.cpp -- pushing ");

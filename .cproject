@@ -140,7 +140,6 @@
 						<entry excluding="Deps|Serial|GTK|CAN" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CAN"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="GTK"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Serial"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -635,8 +634,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.799290244" name="jsmn.o" rcbsApplicability="disable" resourcePath="GTK/jsmn/jsmn.o" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.502020630" name="libjsmn.a" rcbsApplicability="disable" resourcePath="GTK/jsmn/libjsmn.a" toolsToInvoke=""/>
 					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.1121455236" name="KeyPressInterpreter.h" rcbsApplicability="disable" resourcePath="GTK/KeyPressInterpreter.h" toolsToInvoke=""/>
 					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.324003076" name="backendFunctionality.h" rcbsApplicability="disable" resourcePath="GTK/backendFunctionality.h" toolsToInvoke=""/>
 					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.923232838" name="weatherMonitor.cpp" rcbsApplicability="disable" resourcePath="GTK/weatherMonitor.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1740178022.1520177688">
