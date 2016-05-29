@@ -110,3 +110,4 @@ std::string weather()
 //  printf("size: %i<---\n", text.size());
 
 }
+popen

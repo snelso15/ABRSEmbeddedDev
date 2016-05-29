@@ -5,7 +5,6 @@
  *      Author: snelso
  */
 
-
 #include "CANThread.h"
 
 pthread_t CANThread;
@@ -39,7 +38,7 @@ void manageRxBuffer() {
 	while(bufNum){ //|| count < maxPerIteration){
 		readCANMsg(bufNum-1, &msg);
 		//printf("should push msg to can q\n");
-		printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
+		//printf("rx manager got CAN msg!...data: %i, %i, %i, %i, %i, %i, %i, %i\n", msg.data[0], msg.data[1], msg.data[2], msg.data[3], msg.data[4], msg.data[5], msg.data[6], msg.data[7]);
 		pushToBuffer(msg);
 		//count++;
 		bufNum = isRxMsgPending();
@@ -61,13 +60,13 @@ void registerCanThread(){
 	if(0 != sem_init(&mutex, 0, 1)){
 		printf("something went wrong with creating semaphore\n");
 	}else{
-		printf("semaphore registered correctly\n");
+		//printf("semaphore registered correctly\n");
 	}
 
 	if(0 != pthread_create(&CANThread, NULL, &CANThreadRoutine, NULL)){
 		printf("something went wrong with creating thread\n");
 	} else{
-		printf("thread registered correctly\n");
+		//printf("thread registered correctly\n");
 	}
 }
 
