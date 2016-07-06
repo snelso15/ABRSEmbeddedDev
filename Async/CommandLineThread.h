@@ -24,13 +24,7 @@ private:
 	int registerThread();
 	virtual void* threadMainFn(void *);
 	sem_t mutex;
-
 };
-
-
-
-
-
 
 
 #endif /* ASYNC_COMMANDLINETHREAD_H_ */
