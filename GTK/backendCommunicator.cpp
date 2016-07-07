@@ -3,7 +3,7 @@
 char availableBicycles[500][30] = {"0012", "a2", "a3", "a4", "a5"};
 int availableBicycleLength = 5;
 
-// Buffers for safe int getters
+// Buffers for safe integer getters
 char line[256];
 int isint;
 
@@ -96,7 +96,7 @@ void beginRental() {
 	break;
 
       default:
-	printf("An unknown error has occured. Please try again.\n");
+	printf("An unknown error has occurred. Please try again.\n");
 	break;
     }
 
@@ -120,7 +120,7 @@ void beginReturn() {
 	break;
 
       default:
-	printf("An unknown error has occured. Please try again.\n");
+	printf("An unknown error has occurred. Please try again.\n");
 	availableBicycleLength--;
 	break;
     }
@@ -154,7 +154,7 @@ int kioskBeginRental(int one_time_code, unsigned int bikeId) {
 	break;
 
     default:
-	printf("An unknown error has occured. Please try again.\n");
+	printf("An unknown error has occurred. Please try again.\n");
 	successfullRent = 0;
 	break;
     }
@@ -185,7 +185,7 @@ bool kioskBeginReturn(unsigned int bikeId) {
 		  break;
 
 	  default:
-		  printf("An unknown error has occured. Please try again.\n");
+		  printf("An unknown error has occurred. Please try again.\n");
 		  availableBicycleLength--;
 		  successfullReturn = false;
 		  break;

@@ -138,12 +138,14 @@ bool TeensyWorker::tryGetButtonPress(){
 		}
 		case 0x23:
 		{
-			inChar = 'P';
+			//inChar = 'P';
+			inNum = 0;
 			break;
 		}
 		case 0x2A:
 		{
-			inChar = 'S';
+			//inChar = 'S';
+			inNum = 0;
 			break;
 		}
 		default:
@@ -212,10 +214,10 @@ bool TeensyWorker::tryGetButtonPress(){
 				break;
 			}
 		}
-		else if(uistate->pageNum == 9)  // if a enter or clear key was pressed and we are at the idle screen, fake a nav press
-		{
-			pushToNavQ('a');
-		}
+//		else if(uistate->pageNum == 9)  // if a enter or clear key was pressed and we are at the idle screen, fake a nav press
+//		{
+//			pushToNavQ('a');
+//		}
 
 		////DEBUG
 		logText.append("teensy.cpp -- pushing ");

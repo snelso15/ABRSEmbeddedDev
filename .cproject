@@ -600,6 +600,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.1370264289" name="/" resourcePath="Async">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.705383063" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
+							<option id="cdt.managedbuild.option.gnu.cross.prefix.80635669.1982987966" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.80635669"/>
+							<option id="cdt.managedbuild.option.gnu.cross.path.1759542442.1374693987" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.1759542442"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.226265036" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.13595183"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.907703629" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.175875249"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.831651829" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.2118982819"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1356339037" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.981660297"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.1796339395" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1885532933"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.1707302571" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1839597850"/>
+						</toolChain>
+					</folderInfo>
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.GTK" name="/" resourcePath="GTK">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1609526953" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross.1741985505" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
@@ -696,7 +708,7 @@
 					</fileInfo>
 					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1235925538.387470204.1484100444.1521171810" name="CANWorker.h" rcbsApplicability="disable" resourcePath="GTK/CANWorker.h" toolsToInvoke=""/>
 					<sourceEntries>
-						<entry excluding="GTK/jsmn/test|GTK/jsmn/libjsmn.a|GTK/jsmn/jsmn.o|GTK/jsmn/example|GTK/curl|GTK/curl_old|Deps|Deps/wiringPi|GTK/KeyPressInterpreter.h|GTK/KeyPressInterpreter.cpp|PIALL/Teensy|GTK/gtk-main.cpp|CAN/main.c|Serial" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Async|GTK/jsmn/test|GTK/jsmn/libjsmn.a|GTK/jsmn/jsmn.o|GTK/jsmn/example|GTK/curl|GTK/curl_old|Deps|Deps/wiringPi|GTK/KeyPressInterpreter.h|GTK/KeyPressInterpreter.cpp|PIALL/Teensy|GTK/gtk-main.cpp|CAN/main.c|Serial" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

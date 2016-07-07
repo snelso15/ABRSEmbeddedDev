@@ -117,7 +117,7 @@ void UIWorker::updateUI(){
 		//pushToCANQ(numQMsg.key);
 		if(uiScreenNum == 10) {  // in INFO, check for admin code  //TODO
 			if (adminCode->length() == 4) {
-				if (adminCode->compare("6666") == 0) // code is equal, go to admin now
+				if (adminCode->compare("2486") == 0) // code is equal, go to admin now
 				{
 					gf->setuiPageNum(gf->drawAdminPage());
 				}
