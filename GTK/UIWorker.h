@@ -17,6 +17,8 @@
 #include <string>
 #include "PowerSystems.h"
 #include "CANWorker.h"
+#include "backendCommunicator.h"
+#include "consoleColor.h"
 //#include "workerCallbacks.h"
 
 extern bool internetUp;

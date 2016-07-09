@@ -13,6 +13,7 @@
 #include "TeensyWorker.h"
 #include "CANWorker.h"
 #include "CANThread.h"
+#include "backendCommunicatorThread.h"
 
 #include "ABRSDebug.h"
 

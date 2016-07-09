@@ -96,6 +96,8 @@ void CANWorker::processStatusResponse(CANMsg msg){
 	CANStat->getRack(msg.senderId)->heldBikeId = bikeID;
 
 	CANStat->getRack(msg.senderId)->batLevel = msg.data[5];
+
+	CANStat->getRack(msg.senderId)->validateBikeId();
 }
 
 void CANWorker::processBikeReturnedNotif(CANMsg msg) {
@@ -105,13 +107,33 @@ void CANWorker::processBikeReturnedNotif(CANMsg msg) {
 	CANStat->getRack(msg.senderId)->batLevel = msg.data[3];
 	printf("sending bike returned ack to: %i....bike ID that was returned: %i\n", msg.senderId, bikeID);
 	sendBikeReturnedAck(msg.senderId);
-	if(kioskBeginReturn(0xA000)){
-		pushToNavQ('r', 0xA000);
-	} else if(kioskBeginReturn(0xA001)){
-		pushToNavQ('r', 0xA001);
-	} else{
-		//pushToNavQ('r', 0xA000); //for now, just pretend it worked anyway
+
+	bool bikeIDValid = false;
+	if(    bikeID == 0xA000
+		|| bikeID == 0xA001
+		|| bikeID == 0xA002
+		|| bikeID == 0xA003
+		|| bikeID == 0xA004){
+		bikeIDValid = true;
 	}
+
+	if(bikeIDValid){
+		printf(ANSI_COLOR_GREEN "bikeID is valid" ANSI_COLOR_RESET "\n");
+		BackendReturnInputMsg inpQMsg;
+		inpQMsg.bikeIDToReturn = (uint16_t) bikeID;
+		pushToBackendCommReturnInputQ(inpQMsg);
+	} else{
+		//TODO - add redundancy to keep checking until this bikes actual id is received, and return it
+		printf(ANSI_COLOR_RED "bikeID is not valid" ANSI_COLOR_RESET "\n");
+	}
+
+//	if(kioskBeginReturn(0xA000)){
+//		pushToNavQ('r', 0xA000);
+//	} else if(kioskBeginReturn(0xA001)){
+//		pushToNavQ('r', 0xA001);
+//	} else{
+//		//pushToNavQ('r', 0xA000); //for now, just pretend it worked anyway
+//	}
 }
 
 //TODO - add code to process any other internal messages sent to CAN worker... does a customer need to consult kiosk before return?

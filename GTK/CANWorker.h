@@ -15,8 +15,9 @@
 //#include <queue>
 #include "backendCommunicator.h"
 #include "CANThread.h"
-
+#include "backendCommunicatorThread.h"
 #include "ABRSDebug.h"
+#include "consoleColor.h"
 
 
 #define ACK_ITERATIONS_BEFORE_TIMEOUT 20
@@ -42,6 +43,7 @@ struct RackStatus{
 	int statusPhase = 0;
 	int batLevel = 0;
 	bool bikePresent = false;
+	bool bikeIdValid = false;
 	int heldBikeId = 0;
 	void clearAckPhase(){
 		ackPhase = 0;
@@ -49,6 +51,15 @@ struct RackStatus{
 	}
 	void clearStatusPhase(){
 		statusPhase = 0;
+	}
+	void validateBikeId(){
+		if(    heldBikeId == 0xA000
+			|| heldBikeId == 0xA001
+			|| heldBikeId == 0xA002
+			|| heldBikeId == 0xA003
+			|| heldBikeId == 0xA004){
+			bikeIdValid = true;
+		}
 	}
 };
 

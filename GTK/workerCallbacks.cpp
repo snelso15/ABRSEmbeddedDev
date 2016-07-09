@@ -231,6 +231,7 @@ void registerWorkers() {
 	//NO!! USE THREAD INSTREAAD
 	//gdk_threads_add_timeout(200, CANRxCB, cw);
 	registerCanThread();
+	registerBackendCommunicationThreads();
 
 
 	//gdk_threads_add_idle(CANRxCB, cw);

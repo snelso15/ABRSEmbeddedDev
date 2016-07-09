@@ -7,7 +7,7 @@
 
 #include "UIWorker.h"
 #include <string>
-int numbikes = 2;
+
 UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState * state, graphicalFunctions *gf){
 	this->gf = gf;
 	this->navQ = navQ;
@@ -64,13 +64,20 @@ void UIWorker::updateUI(){
 	navQData navQMsg = tryPopNavQ();
 
 	//nested ifs or case statement to inspect uiScreenNum variable and update accordingly
+	if(isRentalOutputDataAvailable()){
+		BackendReturnOutputMsg backendOutputmsg = popRentalOutputQMsg();
+		if(backendOutputmsg.bikeReturnedSuccess){
+			if(uiScreenNum == 0  || uiScreenNum == 9 || uiScreenNum == 4){
+				gf->setuiPageNum(gf->drawReturnPage(backendOutputmsg.bikeIDToReturn));
+				printf("UIWORKER saw msg from BackendCommsThread that a bike return proccessed successfully, should draw return page.\n");
+			}
+		} else{
+			printf("UIWORKER saw msg from BackendCommsThread that a bike return processed but failed\n");
+		}
+	}
+
 	if(navQMsg.dataAvailable){
 		if(navQMsg.key == 'r'){
-			if (!numbikes){
-				numbikes = 1;
-			} else{
-				numbikes = 2;
-			}
 			if(uiScreenNum == 0  || uiScreenNum == 9 || uiScreenNum == 4){
 				gf->setuiPageNum(gf->drawReturnPage(navQMsg.bikeID));
 	//			///////////////
@@ -167,57 +174,44 @@ void UIWorker::updateUI(){
 		int number = atoi(rentalCode->data());
 		//printf("int rentalcode is %d\n", number);
 
-		unsigned short bikeId = 0xA000;
-		if(numbikes == 0){
-			bikeId = 0;
-		} else if (numbikes == 1){
-			bikeId = 0xA001;
-		}
 		int rentalSuccess = 0;
-		//unsigned int bikeID = 0;
+		unsigned int bikeID = 0;
 		int bikeUnlockRack = 0;
-		if(bikeId){
-			if(globalCANStat->getRack(1)->bikePresent){
-				rentalSuccess = kioskBeginRental(number, bikeId);
-				if(rentalSuccess) pushToCANQ(1);
-				bikeUnlockRack = 1;
-				//pushToCANQ(1);//brute force it for now
-			}
-			else if(globalCANStat->getRack(2)->bikePresent){
-				rentalSuccess = kioskBeginRental(number, bikeId);
-				if(rentalSuccess) pushToCANQ(2);
-				bikeUnlockRack = 2;
-				//pushToCANQ(2);//brute force it for now
-			}
-			else if(globalCANStat->getRack(3)->bikePresent){
-				rentalSuccess = kioskBeginRental(number, bikeId);
-				bikeUnlockRack = 3;
-				if(rentalSuccess) pushToCANQ(3);
-				//pushToCANQ(3);//brute force it for now
-			}
-			else if(globalCANStat->getRack(4)->bikePresent){
-				rentalSuccess = kioskBeginRental(number, bikeId);
-				bikeUnlockRack = 4;
-				if(rentalSuccess) pushToCANQ(4);
-				//pushToCANQ(4);//brute force it for now
-			}
-			else if(globalCANStat->getRack(5)->bikePresent){
-				rentalSuccess = kioskBeginRental(number, bikeId);
-				if(rentalSuccess) pushToCANQ(5);
-				bikeUnlockRack = 5;
-				//pushToCANQ(4);//brute force it for now
-			}
+		if(globalCANStat->getRack(1)->bikePresent && globalCANStat->getRack(1)->bikeIdValid){
+			bikeID = globalCANStat->getRack(1)->heldBikeId;
+			rentalSuccess = kioskBeginRental(number, bikeID);
+			if(rentalSuccess) pushToCANQ(1);
+			bikeUnlockRack = 1;
+		}
+		else if(globalCANStat->getRack(2)->bikePresent && globalCANStat->getRack(2)->bikeIdValid){
+			bikeID = globalCANStat->getRack(2)->heldBikeId;
+			rentalSuccess = kioskBeginRental(number, bikeID);
+			if(rentalSuccess) pushToCANQ(2);
+			bikeUnlockRack = 2;
+		}
+		else if(globalCANStat->getRack(3)->bikePresent && globalCANStat->getRack(3)->bikeIdValid){
+			bikeID = globalCANStat->getRack(3)->heldBikeId;
+			rentalSuccess = kioskBeginRental(number, bikeID);
+			bikeUnlockRack = 3;
+			if(rentalSuccess) pushToCANQ(3);
+		}
+		else if(globalCANStat->getRack(4)->bikePresent && globalCANStat->getRack(4)->bikeIdValid){
+			bikeID = globalCANStat->getRack(4)->heldBikeId;
+			rentalSuccess = kioskBeginRental(number, bikeID);
+			bikeUnlockRack = 4;
+			if(rentalSuccess) pushToCANQ(4);
+		}
+		else if(globalCANStat->getRack(5)->bikePresent && globalCANStat->getRack(5)->bikeIdValid){
+			bikeID = globalCANStat->getRack(5)->heldBikeId;
+			rentalSuccess = kioskBeginRental(number, bikeID);
+			if(rentalSuccess) pushToCANQ(5);
+			bikeUnlockRack = 5;
 		}
 
-		if (numbikes && rentalSuccess == 1)
+		if (rentalSuccess == 1)
 		{
 			printf("Success\n");
-			gf->setuiPageNum(gf->drawSuccessPage(bikeId, bikeUnlockRack));
-			if(numbikes == 2){
-				numbikes = 1;
-			}else if(numbikes == 1){
-				numbikes =0;
-			}
+			gf->setuiPageNum(gf->drawSuccessPage(bikeID, bikeUnlockRack));
 		}
 		else
 		{
@@ -253,6 +247,9 @@ void UIWorker::updateUI(){
 
 navQData  UIWorker::tryPopNavQ(){
 	//create data wrapper
+
+	//change code here to use raw c++ queue instead
+	//be sure to wrap it in a mutex lock whenever pushed/popped
 	navQData navQVal;
 	gpointer data = g_async_queue_try_pop(navQ);
 	if(data == NULL){
@@ -455,7 +452,7 @@ std::string UIWorker::getWeatherFile(std::string const &conditionFromWeatherAPIC
 	  Weather.forcastFileName[19] = "tstorms.png";
 	  Weather.forcastFileName[20] = "unknown.png";
 
-	  printf("%s size is %d\n", conditionFromWeatherAPICall.c_str(), getStringSize(conditionFromWeatherAPICall));
+	  printf(ANSI_COLOR_CYAN "%s size is %d" ANSI_COLOR_RESET "\n", conditionFromWeatherAPICall.c_str(), getStringSize(conditionFromWeatherAPICall));
 
 	  std::string fileWithPath = "error";
 	  std::string cleaned_conditionFromWeatherAPICall = "";
