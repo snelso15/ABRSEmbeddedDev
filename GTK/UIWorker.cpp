@@ -6,6 +6,7 @@
  */
 
 #include "UIWorker.h"
+#include <string>
 int numbikes = 2;
 UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState * state, graphicalFunctions *gf){
 	this->gf = gf;
@@ -391,10 +392,100 @@ void UIWorker::updateWeather() {
 
 	weatherIconName = getWeatherIcon();
 	printf("From UI Worker:::%s\n", weatherIconName.data());
-	gf->setWeatherIconName(weatherIconName);
+	//gf->setWeatherIconName(weatherIconName);
+
+
+	gf->setWeatherIconName(getWeatherFile(weatherIconName));
+
 
 	gf->setuiPageNum(gf->drawAdvertisementsPage());
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
+
+
+std::string UIWorker::getWeatherFile(std::string const &conditionFromWeatherAPICall) {
+
+	printf("CONDITIONS = %s\n", conditionFromWeatherAPICall.data());
+
+	struct weather Weather;
+
+	  Weather.forecastPhrase[0] = "chanceflurries";
+	  Weather.forecastPhrase[1] = "chancerain";
+	  Weather.forecastPhrase[2] = "chancesleet";
+	  Weather.forecastPhrase[3] = "chancesnow";
+	  Weather.forecastPhrase[4] = "chancetstorms";
+	  Weather.forecastPhrase[5] = "clear";
+	  Weather.forecastPhrase[6] = "cloudy";
+	  Weather.forecastPhrase[7] = "flurries";
+	  Weather.forecastPhrase[8] = "fog";
+	  Weather.forecastPhrase[9] = "hazy";
+	  Weather.forecastPhrase[10] = "mostlycloudy";
+	  Weather.forecastPhrase[11] = "mostlysunny";
+	  Weather.forecastPhrase[12] = "overcast";
+	  Weather.forecastPhrase[13] = "partlycloudy";
+	  Weather.forecastPhrase[14] = "partlysunny";
+	  Weather.forecastPhrase[15] = "sleet";
+	  Weather.forecastPhrase[16] = "rain";
+	  Weather.forecastPhrase[17] = "snow";
+	  Weather.forecastPhrase[18] = "sunny";
+	  Weather.forecastPhrase[19] = "tstorms";
+	  Weather.forecastPhrase[20] = "unknown";
+
+	  Weather.forcastFileName[0] = "chflurries.png";
+	  Weather.forcastFileName[1] = "chrain.png";
+	  Weather.forcastFileName[2] = "chsleet.png";
+	  Weather.forcastFileName[3] = "chsnowy.png";
+	  Weather.forcastFileName[4] = "chtstorms.png";
+	  Weather.forcastFileName[5] = "sunny.png";
+	  Weather.forcastFileName[6] = "cloudy.png";
+	  Weather.forcastFileName[7] = "flurries.png";
+	  Weather.forcastFileName[8] = "fog.png";
+	  Weather.forcastFileName[9] = "haze.png";
+	  Weather.forcastFileName[10] = "cloudy.png";
+	  Weather.forcastFileName[11] = "sunny.png";
+	  Weather.forcastFileName[12] = "overcast.png";
+	  Weather.forcastFileName[13] = "partly.png";
+	  Weather.forcastFileName[14] = "partly.png";
+	  Weather.forcastFileName[15] = "sleet.png";
+	  Weather.forcastFileName[16] = "rain.png";
+	  Weather.forcastFileName[17] = "snowy.png";
+	  Weather.forcastFileName[18] = "sunny.png";
+	  Weather.forcastFileName[19] = "tstorms.png";
+	  Weather.forcastFileName[20] = "unknown.png";
+
+	  printf("%s size is %d\n", conditionFromWeatherAPICall.c_str(), getStringSize(conditionFromWeatherAPICall));
+
+	  std::string fileWithPath = "error";
+	  std::string cleaned_conditionFromWeatherAPICall = "";
+
+	  if (getStringSize(conditionFromWeatherAPICall) > 0){
+		  cleaned_conditionFromWeatherAPICall = conditionFromWeatherAPICall.substr(0, getStringSize(conditionFromWeatherAPICall) - 1);
+
+		  //printf("***%s***\n", conditionFromWeatherAPICall.c_str());
+		  //std::string forecastCurrent = "chancetstorms";
+
+		  for (int i = 0; i < 21; i++) {
+			if (cleaned_conditionFromWeatherAPICall.compare(Weather.forecastPhrase[i]) == 0) {
+			  //printf("%s\n", Weather.forcastFileName[i].c_str());
+			  fileWithPath = "/home/pi/bike_project/weatherIcons/" + Weather.forcastFileName[i];
+			  //printf("%s\n", fileWithPath.c_str());
+			  break;
+			}
+		  }
+	  }
+	  return fileWithPath;
+}
+
+int UIWorker::getStringSize(std::string const &inputString){
+  size_t sizeOfThisString = inputString.length();
+  int bytesOfThisString = static_cast<int>(sizeOfThisString);
+  return bytesOfThisString;
+}
+
+std::string UIWorker::compareStrings(std::string const &inputStringA, std::string const &inputStringB){
+  std::string returnVal = (inputStringA.compare(inputStringB) == 0) ? "true" : "false";
+  return returnVal;
+}
 

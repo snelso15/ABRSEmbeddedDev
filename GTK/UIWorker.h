@@ -27,6 +27,11 @@ extern bool internetUp;
 #define UI_TIMEOUT_MS 30000
 #define WEATHER_TIMEOUT_MS 600000
 
+struct weather {
+    std::string forecastPhrase[21];
+    std::string forcastFileName[21];
+};
+
 class UIWorker {
 
 private:
@@ -59,6 +64,10 @@ private:
 	void manageUiTimeout(bool resetToUi);
 	void updateWeather();
 	void manageWeatherTimeout();
+	std::string getWeatherFile(std::string const &conditionFromWeatherAPICall);
+	int getStringSize(std::string const &inputString);
+	std::string compareStrings(std::string const &inputStringA, std::string const &inputStringB);
+
 
 public:
 	UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState *state, graphicalFunctions *gf);

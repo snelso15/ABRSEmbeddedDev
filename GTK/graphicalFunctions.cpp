@@ -1202,7 +1202,9 @@ gint graphicalFunctions::drawWeatherPage(void) // TODO
 //			break;
 //		}
 
-		gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/weatherIcons/sunny.png");
+		//gtk_image_set_from_file(GTK_IMAGE(weatherImage), "/home/pi/bike_project/weatherIcons/sunny.png");
+		gtk_image_set_from_file(GTK_IMAGE(weatherImage), weatherIconName.data());
+		printf("%s\n", weatherIconName.data());
 
 
 	}
