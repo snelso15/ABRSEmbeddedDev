@@ -8,6 +8,8 @@
 #include "UIWorker.h"
 #include <string>
 
+bool processingRental = false;
+
 UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsyncQueue *backendQ, UIState * state, graphicalFunctions *gf){
 	this->gf = gf;
 	this->navQ = navQ;
@@ -64,8 +66,8 @@ void UIWorker::updateUI(){
 	navQData navQMsg = tryPopNavQ();
 
 	//nested ifs or case statement to inspect uiScreenNum variable and update accordingly
-	if(isRentalOutputDataAvailable()){
-		BackendReturnOutputMsg backendOutputmsg = popRentalOutputQMsg();
+	if(isReturnOutputDataAvailable()){
+		BackendReturnOutputMsg backendOutputmsg = popReturnOutputQMsg();
 		if(backendOutputmsg.bikeReturnedSuccess){
 			if(uiScreenNum == 0  || uiScreenNum == 9 || uiScreenNum == 4){
 				gf->setuiPageNum(gf->drawReturnPage(backendOutputmsg.bikeIDToReturn));
@@ -169,56 +171,87 @@ void UIWorker::updateUI(){
 
 	if (uiScreenNum == 7) // in processing rental screen
 	{
-		printf("in processing screen\n");
-		//int number = std::stoi(rentalCode,nullptr,0);
-		int number = atoi(rentalCode->data());
-		//printf("int rentalcode is %d\n", number);
+		if(!processingRental){
+			processingRental = true;
+			printf("in processing screen\n");
+			//int number = std::stoi(rentalCode,nullptr,0);
+			int number = atoi(rentalCode->data());
+			//printf("int rentalcode is %d\n", number);
 
-		int rentalSuccess = 0;
-		unsigned int bikeID = 0;
-		int bikeUnlockRack = 0;
-		if(globalCANStat->getRack(1)->bikePresent && globalCANStat->getRack(1)->bikeIdValid){
-			bikeID = globalCANStat->getRack(1)->heldBikeId;
-			rentalSuccess = kioskBeginRental(number, bikeID);
-			if(rentalSuccess) pushToCANQ(1);
-			bikeUnlockRack = 1;
-		}
-		else if(globalCANStat->getRack(2)->bikePresent && globalCANStat->getRack(2)->bikeIdValid){
-			bikeID = globalCANStat->getRack(2)->heldBikeId;
-			rentalSuccess = kioskBeginRental(number, bikeID);
-			if(rentalSuccess) pushToCANQ(2);
-			bikeUnlockRack = 2;
-		}
-		else if(globalCANStat->getRack(3)->bikePresent && globalCANStat->getRack(3)->bikeIdValid){
-			bikeID = globalCANStat->getRack(3)->heldBikeId;
-			rentalSuccess = kioskBeginRental(number, bikeID);
-			bikeUnlockRack = 3;
-			if(rentalSuccess) pushToCANQ(3);
-		}
-		else if(globalCANStat->getRack(4)->bikePresent && globalCANStat->getRack(4)->bikeIdValid){
-			bikeID = globalCANStat->getRack(4)->heldBikeId;
-			rentalSuccess = kioskBeginRental(number, bikeID);
-			bikeUnlockRack = 4;
-			if(rentalSuccess) pushToCANQ(4);
-		}
-		else if(globalCANStat->getRack(5)->bikePresent && globalCANStat->getRack(5)->bikeIdValid){
-			bikeID = globalCANStat->getRack(5)->heldBikeId;
-			rentalSuccess = kioskBeginRental(number, bikeID);
-			if(rentalSuccess) pushToCANQ(5);
-			bikeUnlockRack = 5;
-		}
+			int rentalSuccess = 0;
+			unsigned int bikeID = 0;
+			int bikeUnlockRack = 0;
+			if(globalCANStat->getRack(1)->bikePresent && globalCANStat->getRack(1)->bikeIdValid){
+				bikeID = globalCANStat->getRack(1)->heldBikeId;
+				BackendRentInputMsg msg;
+				msg.rackNum = 1;
+				msg.bikeIDToRent = bikeID;
+				msg.rentalCode = number;
+				pushToBackendCommRentInputQ(msg);
+	//			rentalSuccess = kioskBeginRental(number, bikeID);
+	//			if(rentalSuccess) pushToCANQ(1);
+	//			bikeUnlockRack = 1;
+			}
+			else if(globalCANStat->getRack(2)->bikePresent && globalCANStat->getRack(2)->bikeIdValid){
+				bikeID = globalCANStat->getRack(2)->heldBikeId;
+				BackendRentInputMsg msg;
+				msg.rackNum = 2;
+				msg.bikeIDToRent = bikeID;
+				msg.rentalCode = number;
+				pushToBackendCommRentInputQ(msg);
+	//			rentalSuccess = kioskBeginRental(number, bikeID);
+	//			if(rentalSuccess) pushToCANQ(2);
+	//			bikeUnlockRack = 2;
+			}
+			else if(globalCANStat->getRack(3)->bikePresent && globalCANStat->getRack(3)->bikeIdValid){
+				bikeID = globalCANStat->getRack(3)->heldBikeId;
+				BackendRentInputMsg msg;
+				msg.rackNum = 3;
+				msg.bikeIDToRent = bikeID;
+				msg.rentalCode = number;
+				pushToBackendCommRentInputQ(msg);
+	//			rentalSuccess = kioskBeginRental(number, bikeID);
+	//			bikeUnlockRack = 3;
+	//			if(rentalSuccess) pushToCANQ(3);
+			}
+			else if(globalCANStat->getRack(4)->bikePresent && globalCANStat->getRack(4)->bikeIdValid){
+				bikeID = globalCANStat->getRack(4)->heldBikeId;
+				BackendRentInputMsg msg;
+				msg.rackNum = 4;
+				msg.bikeIDToRent = bikeID;
+				msg.rentalCode = number;
+				pushToBackendCommRentInputQ(msg);
+	//			rentalSuccess = kioskBeginRental(number, bikeID);
+	//			bikeUnlockRack = 4;
+	//			if(rentalSuccess) pushToCANQ(4);
+			}
+			else if(globalCANStat->getRack(5)->bikePresent && globalCANStat->getRack(5)->bikeIdValid){
+				bikeID = globalCANStat->getRack(5)->heldBikeId;
+				BackendRentInputMsg msg;
+				msg.rackNum = 5;
+				msg.bikeIDToRent = bikeID;
+				msg.rentalCode = number;
+				pushToBackendCommRentInputQ(msg);
+	//			rentalSuccess = kioskBeginRental(number, bikeID);
+	//			if(rentalSuccess) pushToCANQ(5);
+	//			bikeUnlockRack = 5;
+			}
+		} else if(isRentOutputDataAvailable()){
+			processingRental = false;
+			BackendRentOutputMsg msg = popRentOutputQMsg();
+			if (msg.bikeRentalSuccess)
+			{
+				printf("Success\n");
+				pushToCANQ(msg.rackNum);
+				gf->setuiPageNum(gf->drawSuccessPage(msg.bikeIDToRent, msg.rackNum));
 
-		if (rentalSuccess == 1)
-		{
-			printf("Success\n");
-			gf->setuiPageNum(gf->drawSuccessPage(bikeID, bikeUnlockRack));
+			}
+			else
+			{
+				printf("Failure\n");
+				gf->setuiPageNum(gf->drawFailurePage());
+			}
 		}
-		else
-		{
-			printf("Failure\n");
-			gf->setuiPageNum(gf->drawFailurePage());
-		}
-
 	}
 
 	if (uiScreenNum == 15) // processing problem screen

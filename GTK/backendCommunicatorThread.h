@@ -29,21 +29,31 @@ struct BackendReturnOutputMsg{
 };
 
 struct BackendRentInputMsg{
-	uint16_t bikeID;
+	uint16_t bikeIDToRent;
 	int rentalCode;
+	int rackNum;
 };
 
 struct BackendRentOutputMsg{
 	uint16_t bikeIDToRent;
 	bool bikeRentalSuccess;
+	int rackNum;
 };
 
 //void pushToOutputQ(BackendOutputMsg msg);
 //bool isInputDataAvailable();
 
-bool isRentalOutputDataAvailable();
+//return functions to be used externally
+bool isReturnOutputDataAvailable();
 void pushToBackendCommReturnInputQ(BackendReturnInputMsg msg);
-BackendReturnOutputMsg popRentalOutputQMsg();
+BackendReturnOutputMsg popReturnOutputQMsg();
+
+
+// rental functions to be used externally
+bool isRentOutputDataAvailable();
+void pushToBackendCommRentInputQ(BackendRentInputMsg msg);
+BackendRentOutputMsg popRentOutputQMsg();
+
 void registerBackendCommunicationThreads();
 
 #endif /* GTK_BACKENDCOMMUNICATORTHREAD_H_ */
