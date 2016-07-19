@@ -136,6 +136,7 @@ bool TeensyWorker::tryGetButtonPress(){
 			inChar = keyVal;
 			break;
 		}
+		/*
 		case 0x23:
 		{
 			//inChar = 'P';
@@ -146,6 +147,23 @@ bool TeensyWorker::tryGetButtonPress(){
 		{
 			//inChar = 'S';
 			inNum = 0;
+			break;
+		}
+		*/
+		case 0x23:
+		{
+			if (uistate->pageNum == 9)
+				inNum = 0;
+			else if (uistate->pageNum == 3)
+				inChar = 'P';
+			break;
+		}
+		case 0x2A:
+		{
+			if (uistate->pageNum == 9)
+				inNum = 0;
+			else if (uistate->pageNum == 3)
+				inChar = 'S';
 			break;
 		}
 		default:
@@ -229,6 +247,10 @@ bool TeensyWorker::tryGetButtonPress(){
 		return true;
 	}
 
+	if (uistate->pageNum == 13) // return screen --> turn on backlight
+	{
+		manageBacklight(true);
+	}
 
 	return false;
 }

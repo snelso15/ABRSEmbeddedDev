@@ -88,6 +88,8 @@ class graphicalFunctions
 		gint drawBikeReportProblemProcessingSuccessOrErrorPage(std::string successOrError);
 		//static gint key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer* data);
 		static void destroy_window( GtkWidget *widget,gpointer  pointer );
+		gint drawOnlineRentHelpPageStepOne(void);
+		gint drawOnlineRentHelpPageStepTwo(void);
 
 		//getters/setters
 		GtkWidget* getMainWindow(){

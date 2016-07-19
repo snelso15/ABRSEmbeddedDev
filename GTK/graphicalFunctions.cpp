@@ -90,14 +90,20 @@ gint graphicalFunctions::buildUI(){
 
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>York College</b></span>");
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 15, 0);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), label1, 15, 0);
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 95, 0);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>   Bicycle</b></span>");
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 100);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 100);
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 130, 85);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Rental System</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 45, 200);
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 60, 170);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"25\"><b>http://york-abrs.herokuapp.com</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 60, 290);
 	gtk_fixed_put (GTK_FIXED(centerFixed), image, 10, 340);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), image, 10, 300);
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
 	 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,13 +256,33 @@ gint graphicalFunctions::buildUI(){
 	////// center rent - pay online //////
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("3");
+	//label1 = gtk_label_new(NULL);
+	//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Enter 4-Digit\nOnline Code\n On Keypad</b></span>");
+	//gtk_misc_set_alignment (GTK_MISC(label1), 0.5, 0);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 30);
+
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Enter 4-Digit\nOnline Code\n On Keypad</b></span>");
-	gtk_misc_set_alignment (GTK_MISC(label1), 0.5, 0);
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 30);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>Please enter 4-digit</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 10, 0);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>one-time use code</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 32, 85);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>from START RENTAL</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 170);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"50\"><b>section of</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 150, 255);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>http://york-abrs.herokuapp.com</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 10, 340);
+
 	OnlineCodeLabel = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(OnlineCodeLabel), "<span foreground=\"black\" font=\"55\"><b></b></span>");
-	gtk_fixed_put (GTK_FIXED(centerFixed), OnlineCodeLabel, 200, 350);
+	gtk_fixed_put (GTK_FIXED(centerFixed), OnlineCodeLabel, 200, 425);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
@@ -279,9 +305,9 @@ gint graphicalFunctions::buildUI(){
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Submit</b></span>");
 	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_1);
 
-//	label1 = gtk_label_new(NULL);
-//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
-//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Help</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 60, UI_BUTTON_POSITION_4);
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -532,15 +558,19 @@ gint graphicalFunctions::buildUI(){
 	////// Advertisments - center//////
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("9");
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>Press Any\nButton To Rent\nA Bicycle</b></span>");
-	gtk_misc_set_alignment (GTK_MISC(label1), 0.5, 0);
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 0);
+	//label1 = gtk_label_new(NULL);
+	//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>Press Any\nButton To Rent\nA Bicycle</b></span>");
+	//gtk_misc_set_alignment (GTK_MISC(label1), 0.5, 0);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), label1, 100, 0);
+
+
+
 //	label1 = gtk_label_new(NULL);
 //	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>a Bicycle</b></span>");
 //	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 150, 220);
 	image = gtk_image_new_from_file("/home/pi/bike_project/bicycle_racer_md_wm.gif");
-	gtk_fixed_put (GTK_FIXED(centerFixed), image, 200, 350);
+	//gtk_fixed_put (GTK_FIXED(centerFixed), image, 200, 350);
+	gtk_fixed_put (GTK_FIXED(centerFixed), image, 200, 255);
 
 
 
@@ -549,6 +579,28 @@ gint graphicalFunctions::buildUI(){
 	////// Advertisments - right///////
     leftFixed = gtk_fixed_new();
 	label = gtk_label_new ("9");
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>Free Bicycle Rentals For</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 80, 30);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>YCP Students And Faculty</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 125);
+
+
+
+	//label1 = gtk_label_new(NULL);
+	//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>YCP Students And Faculty</b></span>");
+	//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, 30);
+
+	//label1 = gtk_label_new(NULL);
+	//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>Free Bicycle Rentals</b></span>");
+	//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 140, 125);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"60\"><b>Please Press Any Button</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 75, 450);
 
     gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
 
@@ -884,6 +936,132 @@ gint graphicalFunctions::buildUI(){
 		rightFixed = gtk_fixed_new();
 
 		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
+		////////////////////////////////////////////////////////////////////////////
+		/////////////// Online Rent Help: Step One Screen
+		/////////////////////////////////////////////////////////////////////////////
+
+		////// center Online Rent Help: Step One //////
+		centerFixed = gtk_fixed_new();
+		label = gtk_label_new ("17");
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Rental Help: Step One</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 64, 0);
+
+
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>at http://york-abrs.herokuapp.com</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 10, 530);
+
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+		////// left Online Rent Help: Step One  ///////
+		leftFixed = gtk_fixed_new();
+		label = gtk_label_new ("17");
+
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Driver ON</b></span>");
+		//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, UI_BUTTON_POSITION_1);
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light ON</b></span>");
+		//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		image = gtk_image_new_from_file("/home/pi/bike_project/web_login.png");
+		gtk_fixed_put (GTK_FIXED(leftFixed), image, 170, 80);
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>Sign up and log in with your YCP Credentials</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 130, 490);
+
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+		////// right Online Rent Help: Step One  //////
+		label = gtk_label_new ("17");
+		rightFixed = gtk_fixed_new();
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Next</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 65, UI_BUTTON_POSITION_1);
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light OFF</b></span>");
+		//gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_2);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
+		////////////////////////////////////////////////////////////////////////////
+		/////////////// Online Rent Help: Step Two Screen
+		/////////////////////////////////////////////////////////////////////////////
+
+		////// center Online Rent: Step Two Help //////
+		centerFixed = gtk_fixed_new();
+		label = gtk_label_new ("18");
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Rental Help: Step Two</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 64, 0);
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>Click \"Start Rental\" </b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 160, 490);
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>Use 4-digit code at Kiosk \"Rent\" Screen</b></span>");
+		gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 530);
+
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+		////// left Online Rent Help: Step Two  ///////
+		leftFixed = gtk_fixed_new();
+		label = gtk_label_new ("18");
+
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Driver ON</b></span>");
+		//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 30, UI_BUTTON_POSITION_1);
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light ON</b></span>");
+		//gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_2);
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
+		gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		image = gtk_image_new_from_file("/home/pi/bike_project/web_rent.png");
+		gtk_fixed_put (GTK_FIXED(leftFixed), image, 170, 80);
+
+
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+		////// right Online Rent Help: Step Two  //////
+		label = gtk_label_new ("18");
+		rightFixed = gtk_fixed_new();
+
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rent</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 65, UI_BUTTON_POSITION_1);
+		//label1 = gtk_label_new(NULL);
+		//gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Light OFF</b></span>");
+		//gtk_fixed_put (GTK_FIXED(rightFixed), label1, 0, UI_BUTTON_POSITION_2);
+		label1 = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+		gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////// disable notebook tab headers
@@ -1370,6 +1548,25 @@ gint graphicalFunctions::drawBikeReportProblemProcessingSuccessOrErrorPage(std::
     return uiPageNum;
 }
 
+gint graphicalFunctions::drawOnlineRentHelpPageStepOne(void)
+{
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 17);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 17);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 17);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
+gint graphicalFunctions::drawOnlineRentHelpPageStepTwo(void)
+{
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 18);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 18);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 18);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
 
 
 gint graphicalFunctions::printSomething(void)
@@ -1506,10 +1703,10 @@ void graphicalFunctions::updateUI(char key){
 //					setuiPageNum(drawSubmitPage());
 //            		key = 'z';
 //					break;
-//				case 'h': // Cancel
-//					setuiPageNum(drawWelcomePage());
-//            		key = 'z';
-//					break;
+				case 'h': // Help
+					setuiPageNum(drawOnlineRentHelpPageStepOne());
+            		key = 'z';
+					break;
 				default:  // was the keypad used?
 					break;
 			}
@@ -1833,6 +2030,58 @@ void graphicalFunctions::updateUI(char key){
 					break;
 			}
 			break;
+		}
+		case (17): // Bike Rent Help Step One
+		{
+			switch (key)
+			{
+				case 'd':
+				{
+					setuiPageNum(drawOnlineCodePage());
+					key = 'z';
+					break;
+				}
+				case 'e':
+				{
+					setuiPageNum(drawOnlineRentHelpPageStepTwo());
+					key = 'z';
+					break;
+				}
+				case 'h':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+				}
+		}
+		case (18): // Bike Rent Help Step Two
+		{
+			switch (key)
+			{
+				case 'd':
+				{
+					setuiPageNum(drawOnlineRentHelpPageStepOne());
+					key = 'z';
+					break;
+				}
+				case 'e':
+				{
+					setuiPageNum(drawOnlineCodePage());
+					key = 'z';
+					break;
+				}
+				case 'h':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+				}
 		}
 		default:
 			break;

@@ -244,7 +244,6 @@ void UIWorker::updateUI(){
 				printf("Success\n");
 				pushToCANQ(msg.rackNum);
 				gf->setuiPageNum(gf->drawSuccessPage(msg.bikeIDToRent, msg.rackNum));
-
 			}
 			else
 			{
