@@ -232,6 +232,7 @@ void registerWorkers() {
 	//gdk_threads_add_timeout(200, CANRxCB, cw);
 	registerCanThread();
 	registerBackendCommunicationThreads();
+	registerWeatherUpdateThread();
 
 
 	//gdk_threads_add_idle(CANRxCB, cw);

@@ -14,6 +14,7 @@
 #include "CANWorker.h"
 #include "CANThread.h"
 #include "backendCommunicatorThread.h"
+#include "weatherUpdateThread.h"
 
 #include "ABRSDebug.h"
 

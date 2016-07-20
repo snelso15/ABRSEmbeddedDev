@@ -19,6 +19,8 @@
 #include "CANWorker.h"
 #include "backendCommunicator.h"
 #include "consoleColor.h"
+#include "weatherUpdateThread.h"
+
 //#include "workerCallbacks.h"
 
 extern bool internetUp;
@@ -27,12 +29,13 @@ extern bool internetUp;
 
 #define UI_WORKER_PERIOD_MS 150
 #define UI_TIMEOUT_MS 30000
-#define WEATHER_TIMEOUT_MS 600000
+#define WEATHER_TIMEOUT_SOONER_MS 20000
+#define WEATHER_TIMEOUT_MS 666666
 
-struct weather {
-    std::string forecastPhrase[21];
-    std::string forcastFileName[21];
-};
+//struct weather {
+//    std::string forecastPhrase[21];
+//    std::string forcastFileName[21];
+//};
 
 class UIWorker {
 
@@ -54,6 +57,7 @@ private:
 	std::string todaysHighTemperature;
 	std::string todaysLowTemperature;
 	std::string weatherIconName;
+	bool updateWeatherSooner;
 
 	//functions
 	navQData tryPopNavQ();
@@ -66,9 +70,9 @@ private:
 	void manageUiTimeout(bool resetToUi);
 	void updateWeather();
 	void manageWeatherTimeout();
-	std::string getWeatherFile(std::string const &conditionFromWeatherAPICall);
+//	std::string getWeatherFile(std::string const &conditionFromWeatherAPICall);
 	int getStringSize(std::string const &inputString);
-	std::string compareStrings(std::string const &inputStringA, std::string const &inputStringB);
+//	std::string compareStrings(std::string const &inputStringA, std::string const &inputStringB);
 
 
 public:

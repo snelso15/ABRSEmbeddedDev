@@ -17,7 +17,6 @@ std::queue<BackendReturnOutputMsg> returnOutputQ;
 std::queue<BackendRentInputMsg> rentInputQ;
 std::queue<BackendRentOutputMsg> rentOutputQ;
 
-
 //////////////////////////////////
 // Return Functions             //
 //////////////////////////////////
@@ -80,6 +79,7 @@ void* BackendCommunicationReturnThreadRoutine(void* nullPointer){
 	}
 	return NULL ;
 }
+
 
 //////////////////////////////////
 // RENTAL Functions             //

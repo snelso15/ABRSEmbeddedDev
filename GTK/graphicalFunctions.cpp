@@ -1334,10 +1334,13 @@ gint graphicalFunctions::drawWeatherPage(void) // TODO
 
 
 	//	printf("\n\nfrom graphical functions, weathertext: %s\n\n", theweather.data());
-		printf("\n\nfrom UIWorker, weathertext: %s\n\n", theweather.data());
+		printf("\n\nfrom graphical functions, weathertext: %s\n\n", theweather.data());
 
-		printf("\n\nfrom UIWorker, Forecast: %s\n\n", currentWeatherForecast.data());
+		printf("\n\nfrom graphical functions, Forecast: %s\n\n", currentWeatherForecast.data());
 
+		int numCurrentWeatherForecastCharacters = 0;
+		numCurrentWeatherForecastCharacters = getStringSize(currentWeatherForecast);
+		printf("From GraphicalFuncktions:--: Forecast size = %d\n\n", numCurrentWeatherForecastCharacters);
 
 		gtk_label_set_text(GTK_LABEL(weatherLabel), theweather.data()); //g_print("g\n");
 		const char *format = "<span foreground=\"black\" font=\"100\"><b>%s</b></span>"; //g_print("h\n");
@@ -1345,13 +1348,19 @@ gint graphicalFunctions::drawWeatherPage(void) // TODO
 		gtk_label_set_markup(GTK_LABEL(weatherLabel), markup);
 		g_free (markup);
 
-
-		gtk_label_set_text(GTK_LABEL(weatherForecast), currentWeatherForecast.data()); //g_print("g\n");
-		const char *format2 = "<span foreground=\"black\" font=\"35\"><b>%s</b></span>"; //g_print("h\n");
-		char* markup2 = g_markup_printf_escaped(format2, currentWeatherForecast.data());// g_print("i\n");
-		gtk_label_set_markup(GTK_LABEL(weatherForecast), markup2);
-		g_free (markup2);
-
+		if (numCurrentWeatherForecastCharacters < 130){
+			gtk_label_set_text(GTK_LABEL(weatherForecast), currentWeatherForecast.data()); //g_print("g\n");
+			const char *format2 = "<span foreground=\"black\" font=\"35\"><b>%s</b></span>"; //g_print("h\n");
+			char* markup2 = g_markup_printf_escaped(format2, currentWeatherForecast.data());// g_print("i\n");
+			gtk_label_set_markup(GTK_LABEL(weatherForecast), markup2);
+			g_free (markup2);
+		} else {
+			gtk_label_set_text(GTK_LABEL(weatherForecast), currentWeatherForecast.data()); //g_print("g\n");
+			const char *format2 = "<span foreground=\"black\" font=\"25\"><b>%s</b></span>"; //g_print("h\n");
+			char* markup2 = g_markup_printf_escaped(format2, currentWeatherForecast.data());// g_print("i\n");
+			gtk_label_set_markup(GTK_LABEL(weatherForecast), markup2);
+			g_free (markup2);
+		}
 
 		gtk_label_set_text(GTK_LABEL(weatherTodayHighTempLabel), highT.data()); //g_print("g\n");
 		const char *format3 = "<span foreground=\"black\" font=\"60\"><b>%s</b></span>"; //g_print("h\n");

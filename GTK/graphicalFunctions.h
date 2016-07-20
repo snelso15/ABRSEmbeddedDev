@@ -91,6 +91,7 @@ class graphicalFunctions
 		gint drawOnlineRentHelpPageStepOne(void);
 		gint drawOnlineRentHelpPageStepTwo(void);
 
+
 		//getters/setters
 		GtkWidget* getMainWindow(){
 			return mainWindow;
@@ -153,6 +154,12 @@ class graphicalFunctions
 //		{
 //		    return !str[h] ? 5381 : (str2int(str, h+1)*33) ^ str[h];
 //		}
+
+		int getStringSize(std::string const &inputString){
+		  size_t sizeOfThisString = inputString.length();
+		  int bytesOfThisString = static_cast<int>(sizeOfThisString);
+		  return bytesOfThisString;
+		}
 };
 
 
