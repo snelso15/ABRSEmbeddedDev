@@ -67,6 +67,7 @@ void performBackendCommunicationReturn() {
 		BackendReturnInputMsg inpMsg = popReturnInputQMsg();
 		BackendReturnOutputMsg msg;
 		msg.bikeIDToReturn = inpMsg.bikeIDToReturn;
+		msg.rackNum = inpMsg.rackNum;
 		msg.bikeReturnedSuccess = (kioskBeginReturn((unsigned int)inpMsg.bikeIDToReturn)) ? true : false;
 		pushToReturnOutputQ(msg);
 	}

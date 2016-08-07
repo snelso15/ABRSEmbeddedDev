@@ -72,7 +72,7 @@ void UIWorker::updateUI(){
 		BackendReturnOutputMsg backendOutputmsg = popReturnOutputQMsg();
 		if(backendOutputmsg.bikeReturnedSuccess){
 			if(uiScreenNum == 0  || uiScreenNum == 9 || uiScreenNum == 4){
-				gf->setuiPageNum(gf->drawReturnPage(backendOutputmsg.bikeIDToReturn));
+				gf->setuiPageNum(gf->drawReturnPage(backendOutputmsg.bikeIDToReturn, backendOutputmsg.rackNum));
 				printf("UIWORKER saw msg from BackendCommsThread that a bike return proccessed successfully, should draw return page.\n");
 			}
 		} else{

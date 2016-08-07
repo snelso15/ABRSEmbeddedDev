@@ -57,6 +57,7 @@ class graphicalFunctions
 		std::string weatherIconName = "";
 
 		int bikeRackNumber = 0;
+		int bikeReturnRackNumber = 0;
 
 		BIKE_CONDITION_CODE bikeCode = NO_ISSUES;
 
@@ -82,7 +83,7 @@ class graphicalFunctions
 		gint drawInfoPage(void);
 		gint drawWeatherPage(void);
 		gint drawAdminPage(void);
-		gint drawReturnPage(unsigned int);
+		gint drawReturnPage(unsigned int, int rackNum);
 		gint drawAdvertisementsPage(void);
 		gint drawBikeProblemsPage(int rackNumber);
 		gint drawBikeReportProblemProcessingPage(BIKE_CONDITION_CODE code);
@@ -139,6 +140,15 @@ class graphicalFunctions
 		void setBikeRackNumber(int number)
 		{
 			bikeRackNumber = number;
+		}
+		int getBikeReturnRackNumber(void)
+		{
+			return bikeReturnRackNumber;
+		}
+
+		void setBikeReturnRackNumber(int number)
+		{
+			bikeReturnRackNumber = number;
 		}
 
 

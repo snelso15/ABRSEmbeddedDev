@@ -21,10 +21,12 @@
 
 struct BackendReturnInputMsg{
 	uint16_t bikeIDToReturn;
+	int rackNum;
 };
 
 struct BackendReturnOutputMsg{
 	uint16_t bikeIDToReturn;
+	int rackNum;
 	bool bikeReturnedSuccess;
 };
 

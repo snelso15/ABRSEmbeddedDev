@@ -1589,8 +1589,10 @@ gint graphicalFunctions::drawAdminPage(void)
     return uiPageNum;
 }
 
-gint graphicalFunctions::drawReturnPage(unsigned int bikeID)
+gint graphicalFunctions::drawReturnPage(unsigned int bikeID, int rackNum)
 {
+	char strRackNum[2] ;
+	sprintf(strRackNum, "%d", rackNum);
 //	char bikeIDString[10];
 //	sprintf(bikeIDString, "%x", bikeID);
 //	std::string wholeMessage;
@@ -1599,11 +1601,12 @@ gint graphicalFunctions::drawReturnPage(unsigned int bikeID)
 //	wholeMessage.append(bikeIDString);
 //	wholeMessage.append("\nwas returned,\nThank you!");
 //
-//	gtk_label_set_text(GTK_LABEL(RentalReturnedLabel), wholeMessage.data()); //g_print("g\n");
-//	const char *format = "<span foreground=\"black\" font=\"45\"><b>%s</b></span>"; //g_print("h\n");
-//	char* markup = g_markup_printf_escaped(format, wholeMessage.data());// g_print("i\n");
-//	gtk_label_set_markup(GTK_LABEL(RentalReturnedLabel), markup);
-//	g_free (markup);
+	//std::string rackNumString = strRackNum;
+	gtk_label_set_text(GTK_LABEL(ReturnLocationLabel), strRackNum); //g_print("g\n");
+	const char *format = "<span foreground=\"black\" font=\"200\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, strRackNum);// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(ReturnLocationLabel), markup);
+	g_free (markup);
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 13);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 13);
