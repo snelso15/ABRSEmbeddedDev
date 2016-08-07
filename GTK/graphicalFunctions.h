@@ -8,13 +8,14 @@
 #include "backendCommunicator.h"
 #include "CommandLineUtils.h"
 #include "PowerSystems.h"
+#include "consoleColor.h"
 
 class graphicalFunctions
 {
-#define UI_BUTTON_POSITION_1 120
-#define UI_BUTTON_POSITION_2 220
-#define UI_BUTTON_POSITION_3 320
-#define UI_BUTTON_POSITION_4 420
+#define UI_BUTTON_POSITION_1 135 //120
+#define UI_BUTTON_POSITION_2 235 //220
+#define UI_BUTTON_POSITION_3 335 //320
+#define UI_BUTTON_POSITION_4 435 //420
 
 	private:
 		kioskKeyInput kki;

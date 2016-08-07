@@ -31,6 +31,7 @@ extern bool internetUp;
 #define UI_TIMEOUT_MS 30000
 #define WEATHER_TIMEOUT_SOONER_MS 20000
 #define WEATHER_TIMEOUT_MS 666666
+//#define WEATHER_TIMEOUT_MS 120000
 
 //struct weather {
 //    std::string forecastPhrase[21];

@@ -45,26 +45,26 @@ parsedWeatherData weatherData;
 void updateThreadWeather() {
 	weatherData.weatherJSON = getWeatherJSON();
 
-	printf("From weatherUpdateThread -- weatherJSON is\n%s",weatherData.weatherJSON.data());
+	printf(ANSI_COLOR_YELLOW "From weatherUpdateThread -- weatherJSON is %s" ANSI_COLOR_RESET "\n",weatherData.weatherJSON.data());
 
 
 	weatherData.currentWeatherTemperature = getTemperature();
 	//gf->setCurrentTemp(currentWeatherTemperature);
 
 	weatherData.currentWeatherForecast = getWeatherForecast(weatherData.weatherJSON);
-	printf("From weatherUpdateThread:::%s\n", weatherData.currentWeatherForecast.data());
+	printf(ANSI_COLOR_YELLOW "From weatherUpdateThread:::%s" ANSI_COLOR_RESET "\n", weatherData.currentWeatherForecast.data());
 	//gf->setcurrentWeatherForecast(currentWeatherForecast);
 
 	weatherData.todaysHighTemperature = getHighTemperature();
-	printf("From weatherUpdateThread:::%s\n", weatherData.todaysHighTemperature.data());
+	printf(ANSI_COLOR_YELLOW "From weatherUpdateThread:::%s" ANSI_COLOR_RESET "\n", weatherData.todaysHighTemperature.data());
 	//gf->setHighTemp(todaysHighTemperature);
 
 	weatherData.todaysLowTemperature = getLowTemperature();
-	printf("From weatherUpdateThread:::%s\n", weatherData.todaysLowTemperature.data());
+	printf(ANSI_COLOR_YELLOW "From weatherUpdateThread:::%s" ANSI_COLOR_RESET "\n", weatherData.todaysLowTemperature.data());
 	//gf->setLowTemp(todaysLowTemperature);
 
 	std::string localWeatherIconName = getWeatherIcon();
-	printf("From weatherUpdateThread:::%s\n", localWeatherIconName.data());
+	printf(ANSI_COLOR_YELLOW "From weatherUpdateThread:::%s" ANSI_COLOR_RESET "\n", localWeatherIconName.data());
 	//gf->setWeatherIconName(weatherIconName);
 
 	//gf->setWeatherIconName(getWeatherFile(weatherIconName));
@@ -72,6 +72,14 @@ void updateThreadWeather() {
 
 	//gf->setuiPageNum(gf->drawAdvertisementsPage());
 	//return &weatherData;
+
+	std::string errorConditionString = "error";
+	if ((weatherData.weatherIconName).compare(errorConditionString) == 0) {   //(inputStringA.compare(inputStringB) == 0)
+		printf(ANSI_COLOR_YELLOW "From weatherUpdateThread:::" ANSI_COLOR_RED "ERROR UPDATING WEATHER DATA " ANSI_COLOR_YELLOW "Retrying in 10 seconds..." ANSI_COLOR_RESET "\n");
+		sleep(10);
+		printf(ANSI_COLOR_YELLOW "Retrying..." ANSI_COLOR_RESET "\n");
+		updateThreadWeather();
+	}
 }
 
 //std::string updateWeatherJSON() {
@@ -149,7 +157,7 @@ std::string getWeatherFile(std::string const &conditionFromWeatherAPICall) {
 	  Weather.forcastFileName[19] = "tstorms.png";
 	  Weather.forcastFileName[20] = "unknown.png";
 
-	  printf(ANSI_COLOR_CYAN "%s size is %d" ANSI_COLOR_RESET "\n", conditionFromWeatherAPICall.c_str(), getStringSize(conditionFromWeatherAPICall));
+	  printf(ANSI_COLOR_YELLOW "%s size is %d" ANSI_COLOR_RESET "\n", conditionFromWeatherAPICall.c_str(), getStringSize(conditionFromWeatherAPICall));
 
 	  std::string fileWithPath = "error";
 	  std::string cleaned_conditionFromWeatherAPICall = "";
@@ -337,7 +345,7 @@ void* weatherInfoUpdateThreadRoutine(void* nullPointer){
 	while(1){
 		//manageRxBuffer();
 		updateThreadWeather();
-		sleep(600);
+		sleep (900); //update weather data from Internet every 15 minutes
 	}
 	return NULL ;
 }

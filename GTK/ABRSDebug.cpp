@@ -67,7 +67,7 @@ void LOG(){
 	numBytesWritten+= logText.size() + dateText.size() + 1;
 
 	std::ofstream myfile;
-	if(numBytesWritten > 4500000000){
+	if(numBytesWritten > 4400000){  //if(numBytesWritten > 4500000000){
 		numBytesWritten = 0;
 		myfile.open (logFileName.c_str());
 	}else{
