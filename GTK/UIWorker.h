@@ -20,6 +20,7 @@
 #include "backendCommunicator.h"
 #include "consoleColor.h"
 #include "weatherUpdateThread.h"
+#include "networkConnectivityThread.h"
 
 //#include "workerCallbacks.h"
 

@@ -91,6 +91,7 @@ class graphicalFunctions
 		static void destroy_window( GtkWidget *widget,gpointer  pointer );
 		gint drawOnlineRentHelpPageStepOne(void);
 		gint drawOnlineRentHelpPageStepTwo(void);
+		gint drawNetworkConnectionDownPage(void);
 
 
 		//getters/setters

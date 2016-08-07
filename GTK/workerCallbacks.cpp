@@ -182,7 +182,6 @@ void pushToNumQ(int key){
 	g_async_queue_push(numQ, (gpointer)numQMsg);
 }
 
-
 void waitForWifi(){
 	int wifiDownSecondsCounter = 0;
 	while (getPing()[0] != '1') {
@@ -233,6 +232,7 @@ void registerWorkers() {
 	registerCanThread();
 	registerBackendCommunicationThreads();
 	registerWeatherUpdateThread();
+	registerInternetConnectionStatusUpdateThread();
 
 
 	//gdk_threads_add_idle(CANRxCB, cw);

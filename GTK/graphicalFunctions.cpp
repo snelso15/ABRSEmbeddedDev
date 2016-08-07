@@ -1119,6 +1119,48 @@ gint graphicalFunctions::buildUI(){
 		gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
 
+	////////////////////////////////////////////////////////////////////////////
+	/////////////// Network Down Screen ////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
+	////// center Network Down Screen //////
+	centerFixed = gtk_fixed_new();
+	label = gtk_label_new ("19");
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Network Connection Down</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 0);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>We Apologize for any Inconvenience</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 15, 490);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"28\"><b>Please Try Again Soon</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 130, 530);
+
+	image = gtk_image_new_from_file("/home/pi/bike_project/noNetwork.png");
+	gtk_fixed_put (GTK_FIXED(centerFixed), image, 120, 80);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+	////// left Network Down Screen  ///////
+	leftFixed = gtk_fixed_new();
+	label = gtk_label_new ("19");
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>OK</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+	////// right Network Down Screen  //////
+	label = gtk_label_new ("19");
+	rightFixed = gtk_fixed_new();
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////// disable notebook tab headers
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -1653,6 +1695,16 @@ gint graphicalFunctions::drawOnlineRentHelpPageStepTwo(void)
     return uiPageNum;
 }
 
+gint graphicalFunctions::drawNetworkConnectionDownPage(void)
+{
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 19);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 19);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 19);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
 
 gint graphicalFunctions::printSomething(void)
 {
@@ -1696,11 +1748,11 @@ void graphicalFunctions::updateUI(char key){
 			drawWelcomePage();
 			switch (key)
 			{
-				case 'a':  // Rent Screen
-					//setuiPageNum(drawRentPage());
-					setuiPageNum(drawOnlineCodePage());
-            		key = 'z';
-					break;
+//				case 'a':  // Rent Screen
+//					//setuiPageNum(drawRentPage());
+//					setuiPageNum(drawOnlineCodePage());
+//            		key = 'z';
+//					break;
 				case 'b':
 					setuiPageNum(drawInfoPage());
 					key = 'z';
@@ -1709,12 +1761,14 @@ void graphicalFunctions::updateUI(char key){
 					setuiPageNum(drawWeatherPage());
 					key = 'z';
 					break;
-				case 'd':
-					break;
-				case 'e':  // Report Problem
-					setuiPageNum(drawReportProblemPage());
-            		key = 'z';
-					break;
+//				case 'd':
+//					setuiPageNum(drawNetworkConnectionDownPage());
+//					key = 'z';
+//					break;
+//				case 'e':  // Report Problem
+//					setuiPageNum(drawReportProblemPage());
+//            		key = 'z';
+//					break;
 				case 'f':
 					break;
 				case 'g':  // Map
@@ -1912,6 +1966,7 @@ void graphicalFunctions::updateUI(char key){
 					break;
 		}
 		break;
+		}
 		case (9): // Advertisements Page
 		{
 			switch (key)
@@ -2170,9 +2225,24 @@ void graphicalFunctions::updateUI(char key){
 					break;
 				}
 		}
+		case (19): // drawNetworkConnectionDownPage
+		{
+			switch (key)
+			{
+			case 'd':
+			{
+				setuiPageNum(drawWelcomePage());
+				key = 'z';
+				break;
+			}
+			default:
+				break;
+		}
 		default:
 			break;
 		}
 	}
+
 }
+
 

@@ -94,6 +94,18 @@ void UIWorker::updateUI(){
 	//			///////////////
 				// code for 'CLEAR' button on Keypad
 			}
+		} else if (navQMsg.key == 'A' && uiScreenNum == 0) { // going to rent, check for network first
+			if (getConnectedInternetStatus()) {
+				gf->setuiPageNum(gf->drawOnlineCodePage());
+			} else {
+				gf->setuiPageNum(gf->drawNetworkConnectionDownPage());
+			}
+		} else if (navQMsg.key == 'E' && uiScreenNum == 0) { // going to rent, check for network first
+			if (getConnectedInternetStatus()) {
+				gf->setuiPageNum(gf->drawReportProblemPage());
+			} else {
+				gf->setuiPageNum(gf->drawNetworkConnectionDownPage());
+			}
 		} else if (navQMsg.key == 'S' && uiScreenNum == 3) {
 			rentalCode->clear();
 			gf->setuiPageNum(gf->drawOnlineCodePage(*rentalCode));
