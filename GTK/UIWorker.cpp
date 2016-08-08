@@ -96,7 +96,19 @@ void UIWorker::updateUI(){
 			}
 		} else if (navQMsg.key == 'A' && uiScreenNum == 0) { // going to rent, check for network first
 			if (getConnectedInternetStatus()) {
-				gf->setuiPageNum(gf->drawOnlineCodePage());
+				// if no bikes force screen 8 with no bikes available (Code 3)
+				bool validBikeHeld = false;
+				for (int i = 1; i <= NUM_RACKS; i++){
+					if(globalCANStat->getRack(i)->bikePresent && globalCANStat->getRack(i)->bikeIdValid){
+						validBikeHeld = true;
+						break;
+					}
+				}
+				if (!validBikeHeld) {
+					gf->setuiPageNum(gf->drawFailurePage(3));
+				} else{
+					gf->setuiPageNum(gf->drawOnlineCodePage());
+				}
 			} else {
 				gf->setuiPageNum(gf->drawNetworkConnectionDownPage());
 			}
@@ -264,6 +276,7 @@ void UIWorker::updateUI(){
 	//			bikeUnlockRack = 5;
 			}
 			else{
+				//shouldnt ever get here due to earlier check, but just in case....
 				printf("no rack met conditions needed for rental\n\r");
 				gf->setuiPageNum(gf->drawFailurePage(3)); // rental success code 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
 			}

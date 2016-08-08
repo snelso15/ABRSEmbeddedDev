@@ -136,6 +136,7 @@ void performBackendCommunicationRent() {
 		msg.bikeRentalSuccess = false;
 		msg.rackNum = inpMsg.rackNum;
 		int rentalSuccessCode = kioskBeginRental(inpMsg.rentalCode, inpMsg.bikeIDToRent);
+		printf("call to kioskBeginRental returned \r\n");
 		msg.rentalSuccessCode = rentalSuccessCode;
 		if(rentalSuccessCode ==1){
 			msg.bikeRentalSuccess = true;

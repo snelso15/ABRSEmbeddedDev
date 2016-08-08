@@ -41,6 +41,7 @@ GtkWidget *OnlineCodeLabel;
 GtkWidget *RentalReturnedLabel;
 GtkWidget *bicycleReportProblemSuccessErrorOrLabel;
 GtkWidget *problemBicycleMenu2Label;
+GtkWidget *rentalErrorMessageLabel;
 
 
 graphicalFunctions::graphicalFunctions(void)
@@ -548,23 +549,28 @@ gint graphicalFunctions::buildUI(){
 	centerFixed = gtk_fixed_new();
 	label = gtk_label_new ("8");
 	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>We're Sorry</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 65, 0);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Your</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 200, 100);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Transaction</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 200);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Cannot Be</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 300);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Completed</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 400);
-	label1 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>At This Time</b></span>"); 
-	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 500);
+	rentalErrorMessageLabel = gtk_label_new(NULL);
+
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>We're Sorry</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 65, 0);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Your</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 200, 100);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Transaction</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 200);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Cannot Be</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 300);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>Completed</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 70, 400);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>At This Time</b></span>");
+//	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 500);
+
+	gtk_label_set_markup(GTK_LABEL(rentalErrorMessageLabel), "<span foreground=\"black\" font=\"550\"><b>Error Message</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), rentalErrorMessageLabel, 0, 100);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
@@ -1355,6 +1361,32 @@ gint graphicalFunctions::drawSuccessPage(unsigned int bikeID, int racknum)
 
 gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccessCode 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
 {
+	std::string failureMessageString;
+	switch (rentalSuccessCode) {
+//		case (1): {
+//			failureMessageString = "Success";
+//			break;
+//		}
+//		case (2): {
+//			failureMessageString = "Invalid Code\nPlease Try Again or\nRequest a New Code";
+//			break;
+//		}
+		case (3): {
+			failureMessageString = "No Charged Bicycles\nCurrently Available";
+			break;
+		}
+		default:
+			failureMessageString = "Invalid Code\nRequest a New Code\nOr Try Again";// "Unknown Error";
+			break;
+	}
+
+
+	gtk_label_set_text(GTK_LABEL(rentalErrorMessageLabel), failureMessageString.data()); //g_print("g\n");
+	const char *format = "<span foreground=\"black\" font=\"60\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, failureMessageString.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(rentalErrorMessageLabel), markup);
+	g_free (markup);
+
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 8);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 8);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 8);
