@@ -78,7 +78,7 @@ class graphicalFunctions
 		gint drawOnlineCodePage(std::string code);
 		gint drawSubmitPage(void);
 		gint drawSuccessPage(unsigned int bikeID, int racknum);
-		gint drawFailurePage(void);
+		gint drawFailurePage(int rentalSuccessCode);
 		gint printSomething(void);
 		gint drawInfoPage(void);
 		gint drawWeatherPage(void);

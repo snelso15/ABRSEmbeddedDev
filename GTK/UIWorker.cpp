@@ -83,7 +83,7 @@ void UIWorker::updateUI(){
 	if(navQMsg.dataAvailable){
 		if(navQMsg.key == 'r'){
 			if(uiScreenNum == 0  || uiScreenNum == 9 || uiScreenNum == 4){
-				gf->setuiPageNum(gf->drawReturnPage(navQMsg.bikeID));
+	//			gf->setuiPageNum(gf->drawReturnPage(navQMsg.bikeID));
 	//			///////////////
 	//			//DEBUG
 	//			logText.append("UIWorker.cpp -- updateUI()");
@@ -185,9 +185,10 @@ void UIWorker::updateUI(){
 
 	if (uiScreenNum == 7) // in processing rental screen
 	{
+		//printf("PROC RENTAL SCREEN WITH TWIRLY THING\r\n");
 		if(!processingRental){
 			processingRental = true;
-			printf("in processing screen\n");
+			printf("IN PROCESSING SCREEN:\n\r");
 			//int number = std::stoi(rentalCode,nullptr,0);
 			int number = atoi(rentalCode->data());
 			//printf("int rentalcode is %d\n", number);
@@ -195,12 +196,20 @@ void UIWorker::updateUI(){
 			int rentalSuccess = 0;
 			unsigned int bikeID = 0;
 			int bikeUnlockRack = 0;
+
+			printf("rack 1:  id - %x,  present - %d, valid - %d\r\n",globalCANStat->getRack(1)->heldBikeId, globalCANStat->getRack(1)->bikePresent , globalCANStat->getRack(1)->bikeIdValid);
+			printf("rack 2:  id - %x,  present - %d, valid - %d\r\n",globalCANStat->getRack(2)->heldBikeId, globalCANStat->getRack(2)->bikePresent , globalCANStat->getRack(2)->bikeIdValid);
+			printf("rack 3:  id - %x,  present - %d, valid - %d\r\n",globalCANStat->getRack(3)->heldBikeId, globalCANStat->getRack(3)->bikePresent , globalCANStat->getRack(3)->bikeIdValid);
+			printf("rack 4:  id - %x,  present - %d, valid - %d\r\n",globalCANStat->getRack(4)->heldBikeId, globalCANStat->getRack(4)->bikePresent , globalCANStat->getRack(4)->bikeIdValid);
+			printf("rack 5:  id - %x,  present - %d, valid - %d\r\n",globalCANStat->getRack(5)->heldBikeId, globalCANStat->getRack(5)->bikePresent , globalCANStat->getRack(5)->bikeIdValid);
+
 			if(globalCANStat->getRack(1)->bikePresent && globalCANStat->getRack(1)->bikeIdValid){
 				bikeID = globalCANStat->getRack(1)->heldBikeId;
 				BackendRentInputMsg msg;
 				msg.rackNum = 1;
 				msg.bikeIDToRent = bikeID;
 				msg.rentalCode = number;
+				printf("telling thread running backencommrent to rent bicycle # %x in rack # %d\r\n", msg.bikeIDToRent , msg.rackNum);
 				pushToBackendCommRentInputQ(msg);
 	//			rentalSuccess = kioskBeginRental(number, bikeID);
 	//			if(rentalSuccess) pushToCANQ(1);
@@ -212,6 +221,7 @@ void UIWorker::updateUI(){
 				msg.rackNum = 2;
 				msg.bikeIDToRent = bikeID;
 				msg.rentalCode = number;
+				printf("telling thread running backencommrent to rent bicycle # %x in rack # %d\r\n", msg.bikeIDToRent , msg.rackNum);
 				pushToBackendCommRentInputQ(msg);
 	//			rentalSuccess = kioskBeginRental(number, bikeID);
 	//			if(rentalSuccess) pushToCANQ(2);
@@ -223,6 +233,7 @@ void UIWorker::updateUI(){
 				msg.rackNum = 3;
 				msg.bikeIDToRent = bikeID;
 				msg.rentalCode = number;
+				printf("telling thread running backencommrent to rent bicycle # %x in rack # %d\r\n", msg.bikeIDToRent , msg.rackNum);
 				pushToBackendCommRentInputQ(msg);
 	//			rentalSuccess = kioskBeginRental(number, bikeID);
 	//			bikeUnlockRack = 3;
@@ -234,6 +245,7 @@ void UIWorker::updateUI(){
 				msg.rackNum = 4;
 				msg.bikeIDToRent = bikeID;
 				msg.rentalCode = number;
+				printf("telling thread running backencommrent to rent bicycle # %x in rack # %d\r\n", msg.bikeIDToRent , msg.rackNum);
 				pushToBackendCommRentInputQ(msg);
 	//			rentalSuccess = kioskBeginRental(number, bikeID);
 	//			bikeUnlockRack = 4;
@@ -245,12 +257,18 @@ void UIWorker::updateUI(){
 				msg.rackNum = 5;
 				msg.bikeIDToRent = bikeID;
 				msg.rentalCode = number;
+				printf("telling thread running backencommrent to rent bicycle # %x in rack # %d\r\n", msg.bikeIDToRent , msg.rackNum);
 				pushToBackendCommRentInputQ(msg);
 	//			rentalSuccess = kioskBeginRental(number, bikeID);
 	//			if(rentalSuccess) pushToCANQ(5);
 	//			bikeUnlockRack = 5;
 			}
+			else{
+				printf("no rack met conditions needed for rental\n\r");
+				gf->setuiPageNum(gf->drawFailurePage(3)); // rental success code 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
+			}
 		} else if(isRentOutputDataAvailable()){
+			printf("SETTING PROCCESSING RENTAL FALSE");
 			processingRental = false;
 			BackendRentOutputMsg msg = popRentOutputQMsg();
 			if (msg.bikeRentalSuccess)
@@ -262,7 +280,7 @@ void UIWorker::updateUI(){
 			else
 			{
 				printf("Failure\n");
-				gf->setuiPageNum(gf->drawFailurePage());
+				gf->setuiPageNum(gf->drawFailurePage(msg.rentalSuccessCode)); // rental success code 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
 			}
 		}
 	}

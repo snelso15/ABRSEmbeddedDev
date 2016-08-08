@@ -44,6 +44,7 @@ struct RackStatus{
 	int batLevel = 0;
 	bool bikePresent = false;
 	bool bikeIdValid = false;
+	bool awaitingValidationForReturn = false;
 	int heldBikeId = 0;
 	void clearAckPhase(){
 		ackPhase = 0;
@@ -109,6 +110,7 @@ private:
 	void processBikeReturnedNotif(CANMsg msg);
 	void processStatusResponse(CANMsg msg);
 	void manageAcks();
+	void processUnhandledReturns();
 //	void manageRXBuffer();
 	void pingStatus();
 

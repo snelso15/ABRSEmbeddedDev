@@ -40,6 +40,7 @@ struct BackendRentOutputMsg{
 	uint16_t bikeIDToRent;
 	bool bikeRentalSuccess;
 	int rackNum;
+	int rentalSuccessCode;
 };
 
 //void pushToOutputQ(BackendOutputMsg msg);

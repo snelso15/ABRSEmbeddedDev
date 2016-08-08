@@ -129,13 +129,15 @@ BackendRentOutputMsg popRentOutputQMsg(){
 
 void performBackendCommunicationRent() {
 	while(isRentInputDataAvailable()){
+		printf("performing backend comm to rent!!\r\n");
 		BackendRentInputMsg inpMsg = popRentInputQMsg();
 		BackendRentOutputMsg msg;
 		msg.bikeIDToRent = inpMsg.bikeIDToRent;
 		msg.bikeRentalSuccess = false;
 		msg.rackNum = inpMsg.rackNum;
-		int rentalSuccess = kioskBeginRental(inpMsg.rentalCode, inpMsg.bikeIDToRent);
-		if(rentalSuccess ==1){
+		int rentalSuccessCode = kioskBeginRental(inpMsg.rentalCode, inpMsg.bikeIDToRent);
+		msg.rentalSuccessCode = rentalSuccessCode;
+		if(rentalSuccessCode ==1){
 			msg.bikeRentalSuccess = true;
 		}
 		pushToRentOutputQ(msg);

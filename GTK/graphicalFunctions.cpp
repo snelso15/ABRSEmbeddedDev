@@ -1353,7 +1353,7 @@ gint graphicalFunctions::drawSuccessPage(unsigned int bikeID, int racknum)
     return uiPageNum;
 }
 
-gint graphicalFunctions::drawFailurePage(void)
+gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccessCode 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
 {
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 8);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 8);

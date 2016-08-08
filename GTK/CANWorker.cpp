@@ -54,9 +54,20 @@ void CANWorker::processTasks() {
 
 	///////////////
 	//DEBUG
+	logText.append("CW - priocess unhandled returns");
+	LOG();
+	///////////////
+
+	processUnhandledReturns();
+
+	///////////////
+	//DEBUG
 	logText.append("CW - Done Iteration");
 	LOG();
 	///////////////
+
+
+
 }
 
 void CANWorker::processUnlockBikeAck(CANMsg msg){
@@ -100,6 +111,25 @@ void CANWorker::processStatusResponse(CANMsg msg){
 	CANStat->getRack(msg.senderId)->validateBikeId();
 }
 
+void CANWorker::processUnhandledReturns(){
+
+	int i;
+	for (i = 1; i <= NUM_RACKS; i++){
+		int bikeID;
+		if(CANStat->getRack(i)->awaitingValidationForReturn){
+			bikeID = CANStat->getRack(i)->heldBikeId;
+			if(CANStat->getRack(i)->bikeIdValid){
+				printf(ANSI_COLOR_GREEN "Processing bike return for bike %x now that valid ID is aquired" ANSI_COLOR_RESET "\n", bikeID);
+				BackendReturnInputMsg inpQMsg;
+				inpQMsg.bikeIDToReturn = (uint16_t) bikeID;
+				inpQMsg.rackNum = i;
+				pushToBackendCommReturnInputQ(inpQMsg);
+				CANStat->getRack(i)->awaitingValidationForReturn = false;
+			}
+		}
+	}
+}
+
 void CANWorker::processBikeReturnedNotif(CANMsg msg) {
 	CANStat->getRack(msg.senderId)->bikePresent = true;
 	int bikeID = (int)(msg.data[1] << 8) | msg.data[2];
@@ -121,10 +151,12 @@ void CANWorker::processBikeReturnedNotif(CANMsg msg) {
 		printf(ANSI_COLOR_GREEN "bikeID is valid" ANSI_COLOR_RESET "\n");
 		BackendReturnInputMsg inpQMsg;
 		inpQMsg.bikeIDToReturn = (uint16_t) bikeID;
+		inpQMsg.rackNum = msg.senderId;
 		pushToBackendCommReturnInputQ(inpQMsg);
 	} else{
 		//TODO - add redundancy to keep checking until this bikes actual id is received, and return it
-		printf(ANSI_COLOR_RED "bikeID is not valid" ANSI_COLOR_RESET "\n");
+		CANStat->getRack(msg.senderId)->awaitingValidationForReturn = true;
+		printf(ANSI_COLOR_RED "bikeID is not valid..setting flag" ANSI_COLOR_RESET "\n");
 	}
 
 //	if(kioskBeginReturn(0xA000)){
