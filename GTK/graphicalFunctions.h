@@ -59,6 +59,10 @@ class graphicalFunctions
 		int bikeRackNumber = 0;
 		int bikeReturnRackNumber = 0;
 
+		int currentTime_Hours = 12;
+
+		int currentTime_Minutes = 0;
+
 		BIKE_CONDITION_CODE bikeCode = NO_ISSUES;
 
 	public:
@@ -130,6 +134,22 @@ class graphicalFunctions
 
 		void setWeatherIconName(std::string name) {
 			weatherIconName = name;
+		}
+
+		void setCurrentTime_Hours(int hour) {
+			currentTime_Hours = hour;
+		}
+
+		int getCurrentTime_Hours(void) {
+			return currentTime_Hours;
+		}
+
+		void setCurrentTime_Minutes(int minute) {
+			currentTime_Minutes = minute;
+		}
+
+		int getCurrentTime_Minutes(void) {
+			return currentTime_Minutes;
 		}
 
 		int getBikeRackNumber(void)

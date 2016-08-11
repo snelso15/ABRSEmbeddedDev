@@ -8,38 +8,6 @@
 #include "weatherUpdateThread.h"
 
 pthread_t weatherInfoUpdateThread;
-//sem_t weatherInfoUpdateMutex;
-
-//numberOfWeatherIterations = 0;
-//
-//weatherJSON = "";
-//currentWeatherTemperature = "";
-//currentWeatherForecast = "";
-//todaysHighTemperature = "";
-//todaysLowTemperature = "";
-//weatherIconName = "";
-
-//updateWeather();
-
-
-
-
-//void manageWeatherTimeout(){
-//	int elapsedWeatherTime = 0;
-//	elapsedWeatherTime = (numberOfWeatherIterations * UI_WORKER_PERIOD_MS);
-//	if (elapsedWeatherTime >= WEATHER_TIMEOUT_MS){
-//		if (getPing()[0] == '1') {
-//			updateWeather();
-//			numberOfWeatherIterations = 0;
-//		}
-//		else {
-//			numberOfWeatherIterations = numberOfWeatherIterations - 100;
-//		}
-//	} else {
-//		numberOfWeatherIterations++;
-//	}
-//}
-
 parsedWeatherData weatherData;
 
 void updateThreadWeather() {
@@ -81,31 +49,6 @@ void updateThreadWeather() {
 		updateThreadWeather();
 	}
 }
-
-//std::string updateWeatherJSON() {
-//	return getWeatherJSON();
-//}
-//
-//std::string udpateCurrentWeatherTemperature() {
-//	return getTemperature();
-//}
-//
-//std::string updateCurrentWeatherForecast() {
-//	return getWeatherForecast(weatherData.weatherJSON);
-//}
-//
-//std::string updateHighTemperature() {
-//	return getHighTemperature();
-//}
-//
-//std::string updateLowTemperature() {
-//	return getLowTemperature();
-//}
-//
-//std::string updateWeatherIconName() {
-//	return getWeatherFile(getWeatherIcon());
-//}
-
 
 std::string getWeatherFile(std::string const &conditionFromWeatherAPICall) {
 

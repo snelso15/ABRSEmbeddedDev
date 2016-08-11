@@ -42,6 +42,7 @@ GtkWidget *RentalReturnedLabel;
 GtkWidget *bicycleReportProblemSuccessErrorOrLabel;
 GtkWidget *problemBicycleMenu2Label;
 GtkWidget *rentalErrorMessageLabel;
+GtkWidget *currentSystemTimeLabel;
 
 
 graphicalFunctions::graphicalFunctions(void)
@@ -155,12 +156,12 @@ gint graphicalFunctions::buildUI(){
     label1 = gtk_label_new(NULL);
     label2 = gtk_label_new(NULL);
     label3 = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Report</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 42, UI_BUTTON_POSITION_1 - 40);
-	gtk_label_set_markup(GTK_LABEL(label2), "<span foreground=\"black\" font=\"30\"><b>Bicycle</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label2, 38, UI_BUTTON_POSITION_1);
-	gtk_label_set_markup(GTK_LABEL(label3), "<span foreground=\"black\" font=\"30\"><b>Problem</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label3, 30, UI_BUTTON_POSITION_1 + 40);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"24\"><b>Report</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 57, UI_BUTTON_POSITION_1 - 30);
+	gtk_label_set_markup(GTK_LABEL(label2), "<span foreground=\"black\" font=\"24\"><b>Bicycle</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label2, 53, UI_BUTTON_POSITION_1);
+	gtk_label_set_markup(GTK_LABEL(label3), "<span foreground=\"black\" font=\"24\"><b>Problem</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label3, 45, UI_BUTTON_POSITION_1 + 30);
 //	label1 = gtk_label_new(NULL);
 //	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Rates</b></span>");
 //	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_2);
@@ -169,7 +170,19 @@ gint graphicalFunctions::buildUI(){
 //	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 45, UI_BUTTON_POSITION_3);
 	label1 = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Map</b></span>");
-	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 65, UI_BUTTON_POSITION_3);
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 65, UI_BUTTON_POSITION_2);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"24\"><b>Operating</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 30, UI_BUTTON_POSITION_3 - 15);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"24\"><b>Hours</b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 60, UI_BUTTON_POSITION_3 + 15);
+
+	currentSystemTimeLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(currentSystemTimeLabel), "<span foreground=\"black\" font=\"30\"><b><i>12:00 pm</i></b></span>");
+	gtk_fixed_put (GTK_FIXED(rightFixed), currentSystemTimeLabel, 0, 530);
+
 
   	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
@@ -1202,6 +1215,34 @@ gint graphicalFunctions::buildUI(){
 
 gint graphicalFunctions::drawWelcomePage(void)
 {
+	int hours = getCurrentTime_Hours();
+	int minutes = getCurrentTime_Minutes();
+	char am_pm[3];
+
+	if (hours > 12) {
+		hours = hours % 12;
+		sprintf(am_pm, "%s","pm");
+	} else {
+		sprintf(am_pm, "%s", "am");
+	}
+
+	char currentTime[30];
+
+	if (minutes < 10) {
+		sprintf(currentTime, "%d:0%d %s", hours, minutes, am_pm);
+	} else {
+		sprintf(currentTime, "%d:%d %s", hours, minutes, am_pm);
+	}
+	std::string currentTimeString = currentTime;
+	printf(ANSI_COLOR_CYAN "%s" ANSI_COLOR_RESET "\n", currentTimeString.data());
+
+	gtk_label_set_text(GTK_LABEL(currentSystemTimeLabel), currentTimeString.data()); //g_print("g\n");
+	//"<span foreground=\"black\" font=\"30\"><b><i>12:00 pm</i></b></span>")
+	const char *format = "<span foreground=\"black\" font=\"30\"><b><i>%s</i></b></span>"; //g_print("h\n");
+	char* markup = g_markup_printf_escaped(format, currentTimeString.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(currentSystemTimeLabel), markup);
+	g_free (markup);
+
 	//printf("Down\n");   // key down
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 0);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 0);
@@ -1804,11 +1845,11 @@ void graphicalFunctions::updateUI(char key){
 //					setuiPageNum(drawReportProblemPage());
 //            		key = 'z';
 //					break;
-				case 'f':
-					break;
-				case 'g':  // Map
+				case 'f':  // Map
 					setuiPageNum(drawMapPage());
 					key = 'z';
+					break;
+				case 'g': // Operating Hours
 					break;
 				case 'h':
 					break;

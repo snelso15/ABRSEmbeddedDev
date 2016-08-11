@@ -16,7 +16,8 @@
 #include "backendCommunicatorThread.h"
 #include "weatherUpdateThread.h"
 #include "networkConnectivityThread.h"
-
+#include "timeThread.h"
+#include "queueTypes.h"
 #include "ABRSDebug.h"
 
 #define CAN_WORKER_PERIOD_MS 150

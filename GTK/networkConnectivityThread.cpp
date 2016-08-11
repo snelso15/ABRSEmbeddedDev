@@ -63,8 +63,7 @@ void* internetConnectionStatusUpdateThreadRoutine(void* nullPointer){
 void registerInternetConnectionStatusUpdateThread() {
 	if (0 != pthread_create(&internetConnectionStatusThread, NULL, &internetConnectionStatusUpdateThreadRoutine, NULL)){
 		printf("something went wrong with creating internetConnectionStatusThread\n");
-	} else{
+	} else {
 		printf("internetConnectionStatusThread registered correctly\n");
 	}
-
 }

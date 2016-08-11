@@ -23,6 +23,7 @@ UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsy
 	initUI();
 
 	numberOfWeatherIterations = 0;
+	numberOfTimeUIIterations = 0;
 //
 	weatherJSON = "";
 	currentWeatherTemperature = "";
@@ -393,6 +394,7 @@ void UIWorker::work() {
 	periodic_battery_checkup();
 	periodic_status_update();
 	manageWeatherTimeout();
+	manageCurrentSystemTimeUIUpdateTimeOut();
 }
 
 void UIWorker::manageWeatherTimeout(){
@@ -422,6 +424,20 @@ void UIWorker::manageWeatherTimeout(){
 		} else {
 			numberOfWeatherIterations++;
 		}
+	}
+}
+
+void UIWorker::manageCurrentSystemTimeUIUpdateTimeOut(){
+	int elapsedUIUpdateTime = 0;
+	elapsedUIUpdateTime = (numberOfTimeUIIterations * UI_WORKER_PERIOD_MS);
+	if (elapsedUIUpdateTime >= UI_TIME_UPDATEUI_TIMEOUT) {
+		numberOfTimeUIIterations = 0;
+		// do the update
+		printf(ANSI_COLOR_CYAN "Current Time -- %d hours %d minutes" ANSI_COLOR_RESET "\n", kioskTimeData.currentTime_Hours, kioskTimeData.currentTime_Minutes);
+		gf->setCurrentTime_Hours(kioskTimeData.currentTime_Hours);
+		gf->setCurrentTime_Minutes(kioskTimeData.currentTime_Minutes);
+	} else {
+		numberOfTimeUIIterations++;
 	}
 }
 
@@ -458,10 +474,6 @@ void UIWorker::manageUiTimeout(bool resetToUi) {
 }
 
 void UIWorker::updateWeather() {
-	//parsedWeatherData *weatherDataFromThread = getWeatherDataStruct();
-
-	//weatherJSON = getWeatherJSON();
-
 	parsedWeatherData *tempWeatherDataFromThread = getWeatherDataStruct();
 	std::string errorConditionString = "error";
 	if((tempWeatherDataFromThread->weatherIconName).compare(errorConditionString) != 0) {

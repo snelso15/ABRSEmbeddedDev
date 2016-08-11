@@ -21,6 +21,7 @@
 #include "consoleColor.h"
 #include "weatherUpdateThread.h"
 #include "networkConnectivityThread.h"
+#include "timeThread.h"
 
 //#include "workerCallbacks.h"
 
@@ -33,6 +34,7 @@ extern bool internetUp;
 #define WEATHER_TIMEOUT_SOONER_MS 20000
 #define WEATHER_TIMEOUT_MS 666666
 //#define WEATHER_TIMEOUT_MS 120000
+#define UI_TIME_UPDATEUI_TIMEOUT 10000
 
 //struct weather {
 //    std::string forecastPhrase[21];
@@ -53,6 +55,7 @@ private:
 	std::string * adminCode;
 	int numberOfUiIterations;
 	int numberOfWeatherIterations;
+	int numberOfTimeUIIterations;
 	std::string weatherJSON;
 	std::string currentWeatherTemperature;
 	std::string currentWeatherForecast;
@@ -75,6 +78,7 @@ private:
 //	std::string getWeatherFile(std::string const &conditionFromWeatherAPICall);
 	int getStringSize(std::string const &inputString);
 //	std::string compareStrings(std::string const &inputStringA, std::string const &inputStringB);
+	void manageCurrentSystemTimeUIUpdateTimeOut();
 
 
 public:

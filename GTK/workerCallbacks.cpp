@@ -92,12 +92,19 @@ void cleanUp() {
  ******************* */
  UIState *state = new UIState;
  GAsyncQueue *numQ = g_async_queue_new();
+ GAsyncQueue *navQ = g_async_queue_new();
 /****************************
  *
  *
  *
  */
 
+ void pushToNavQ(char key){
+ 	navQData *navQMsg = new navQData;
+ 	navQMsg->key = key;
+ 	navQMsg->dataAvailable = true;
+ 	g_async_queue_push(navQ, (gpointer)navQMsg);
+ }
 
 void key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer data)
 {
@@ -108,10 +115,12 @@ void key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer data)
 	logText.append("TEMP KEYBOARD CALLBACK FIRED");
 	LOG();
 	///////////////
+	printf("keypress callbacak fired! \n");
+	gint keyVal = kevent->keyval;
 
 	int inNum = -1;
+	char inChar = 'z';
 
-	gint keyVal = kevent->keyval;
 	switch (keyVal){
 		case '0':
 		{
@@ -163,15 +172,151 @@ void key_press_cb(GtkWidget *widget, GdkEventKey *kevent, gpointer data)
 			inNum = 9;
 			break;
 		}
-	}
+		case 'A':
+		{
+			inChar = keyVal;
 
+			break;
+		}
+		case 'B':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'C':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'D':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'E':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'F':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'G':
+		{
+			inChar = keyVal;
+			break;
+		}
+		case 'H':
+		{
+			inChar = keyVal;
+			break;
+		}
+		/*
+		case 0x23:
+		{
+			//inChar = 'P';
+			inNum = 0;
+			break;
+		}
+		case 0x2A:
+		{
+			//inChar = 'S';
+			inNum = 0;
+			break;
+		}
+		*/
+		case 0x23:
+		{
+			if (state->pageNum == 9)
+				inNum = 0;
+			else if (state->pageNum == 3)
+				inChar = 'P';
+			break;
+		}
+		case 0x2A:
+		{
+			if (state->pageNum == 9)
+				inNum = 0;
+			else if (state->pageNum == 3)
+				inChar = 'S';
+			break;
+		}
+		default:
+			break;
+	}
 	if(inNum != -1){
 		//only accept number input if on appropriate screen
-		if(state->pageNum == 3){
+//		if(uistate->pageNum == 3){
+		if(state->pageNum == 3 || state->pageNum == 10){   // accept numkeypad presses if on 'info' or 'input rental code' pages
 			//printf("Received a number input on the correct page: %i\n", inNum); //TODO - debug, remove
+
+			////DEBUG
+			logText.append("teensy.cpp -- pushing ");
+			//logText.append(&inChar);
+			appendInt(inNum);
+			logText.append(" to numQ");
+			LOG();
+			/////////////////
+
+
 			pushToNumQ(inNum);
-			//return true;
 		}
+		else if(state->pageNum == 9)  // if a num key was pressed and we are at the idle screen, fake a nav press
+		{
+
+			////DEBUG
+			logText.append("teensy.cpp -- got number in start screen, pushing a");
+			//logText.append(&inChar);
+			//appendInt(inNum);
+			logText.append(" to navQ");
+			LOG();
+			/////////////////
+
+			pushToNavQ('a');
+		}
+	}
+
+	if(inChar != 'z'){
+//		if (uistate->pageNum == 12)//admin page
+//		{
+//			printf("pageNum is 12\n");
+//			g_print("pageNum is 12\n");
+//			// TODO insert check for admin screen
+//			switch (inChar)
+//			{
+//			case 'A': // turn on driver board
+//				g_print("turn on driver board\n");
+//				printf("turn on driver board\n");
+//				tc->activateLCDBoard();
+//				break;
+//			case 'B': // turn on backlight
+//				g_print("turn on backlight\n");
+//				backLightOn();
+//				break;
+//			case 'E': // turn off driver board
+//				g_print("turn off driver board\n");
+//				tc->deactivateLCDBoard();
+//				break;
+//			case 'F': // turn off backlight
+//				g_print("turn off backlight\n");
+//				backLightOff();
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+
+		////DEBUG
+		logText.append("teensy.cpp -- pushing ");
+		appendChar(inChar);
+		logText.append(" to navQ");
+		LOG();
+		/////////////////
+		printf("keypress callback writing char: %c! to navQ \n", inChar);
+
+		pushToNavQ(inChar);
 	}
 }
 
@@ -206,7 +351,7 @@ void waitForWifi(){
 }
 
 void registerWorkers() {
-	GAsyncQueue *navQ = g_async_queue_new();
+
 	GAsyncQueue *CANQ = g_async_queue_new();
 	GAsyncQueue *backendQ = g_async_queue_new();
 
@@ -233,7 +378,7 @@ void registerWorkers() {
 	registerBackendCommunicationThreads();
 	registerWeatherUpdateThread();
 	registerInternetConnectionStatusUpdateThread();
-
+	registerTimeStatusThreadUpdateThread();
 
 	//gdk_threads_add_idle(CANRxCB, cw);
 	//gdk_threads_add_timeout(100 ,CANRxCB, cw);
