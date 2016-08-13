@@ -22,6 +22,7 @@ UIWorker::UIWorker(GAsyncQueue *navQ, GAsyncQueue *numQ, GAsyncQueue *CANQ, GAsy
 	init_battery_comms();
 	initUI();
 
+	openForRent = false;
 	numberOfWeatherIterations = 0;
 	numberOfTimeUIIterations = 0;
 //
@@ -96,22 +97,26 @@ void UIWorker::updateUI(){
 				// code for 'CLEAR' button on Keypad
 			}
 		} else if (navQMsg.key == 'A' && uiScreenNum == 0) { // going to rent, check for network first
-			if (getConnectedInternetStatus()) {
-				// if no bikes force screen 8 with no bikes available (Code 3)
-				bool validBikeHeld = false;
-				for (int i = 1; i <= NUM_RACKS; i++){
-					if(globalCANStat->getRack(i)->bikePresent && globalCANStat->getRack(i)->bikeIdValid){
-						validBikeHeld = true;
-						break;
+			if (openForRent) {
+				if (getConnectedInternetStatus()) {
+					// if no bikes force screen 8 with no bikes available (Code 3)
+					bool validBikeHeld = false;
+					for (int i = 1; i <= NUM_RACKS; i++){
+						if(globalCANStat->getRack(i)->bikePresent && globalCANStat->getRack(i)->bikeIdValid){
+							validBikeHeld = true;
+							break;
+						}
 					}
-				}
-				if (!validBikeHeld) {
-					gf->setuiPageNum(gf->drawFailurePage(3));
-				} else{
-					gf->setuiPageNum(gf->drawOnlineCodePage());
+					if (!validBikeHeld) {
+						gf->setuiPageNum(gf->drawFailurePage(3));
+					} else{
+						gf->setuiPageNum(gf->drawOnlineCodePage());
+					}
+				} else {
+					gf->setuiPageNum(gf->drawNetworkConnectionDownPage());
 				}
 			} else {
-				gf->setuiPageNum(gf->drawNetworkConnectionDownPage());
+				gf->setuiPageNum(gf->drawFailurePage(9));
 			}
 		} else if (navQMsg.key == 'E' && uiScreenNum == 0) { // going to rent, check for network first
 			if (getConnectedInternetStatus()) {
@@ -433,9 +438,19 @@ void UIWorker::manageCurrentSystemTimeUIUpdateTimeOut(){
 	if (elapsedUIUpdateTime >= UI_TIME_UPDATEUI_TIMEOUT) {
 		numberOfTimeUIIterations = 0;
 		// do the update
-		printf(ANSI_COLOR_CYAN "Current Time -- %d hours %d minutes" ANSI_COLOR_RESET "\n", kioskTimeData.currentTime_Hours, kioskTimeData.currentTime_Minutes);
+		printf(ANSI_COLOR_CYAN "Current Time -- %d hours %d minutes" ANSI_COLOR_RESET , kioskTimeData.currentTime_Hours, kioskTimeData.currentTime_Minutes);
 		gf->setCurrentTime_Hours(kioskTimeData.currentTime_Hours);
 		gf->setCurrentTime_Minutes(kioskTimeData.currentTime_Minutes);
+		//gf->setClosingTime(kioskTimeData.closingTime);
+		//gf->setOpeningtime(kioskTimeData.openingTime);
+		gf->setOpeningTime_Hours(kioskTimeData.openingTime_Hours);
+		gf->setOpeningtTime_Minutes(kioskTimeData.openingTime_Minutes);
+		gf->setClosingTime_Hours(kioskTimeData.closingTime_Hours);
+		gf->setClosingTime_Minutes(kioskTimeData.closingTime_Minutes);
+
+		openForRent = OpenForRenting(kioskTimeData.openingTime_Hours, kioskTimeData.openingTime_Minutes, kioskTimeData.closingTime_Hours, kioskTimeData.closingTime_Minutes, kioskTimeData.currentTime_Hours, kioskTimeData.currentTime_Minutes);
+		std::string kioskOpenCloseStatus = (openForRent) ? "Open" : "Closed";
+		printf(ANSI_COLOR_CYAN " -- Kiosk is %s" ANSI_COLOR_RESET "\n", kioskOpenCloseStatus.c_str());
 	} else {
 		numberOfTimeUIIterations++;
 	}
@@ -518,4 +533,12 @@ int UIWorker::getStringSize(std::string const &inputString){
   size_t sizeOfThisString = inputString.length();
   int bytesOfThisString = static_cast<int>(sizeOfThisString);
   return bytesOfThisString;
+}
+
+bool UIWorker::OpenForRenting(int openHour, int openMinute, int closeHour, int closeMinute, int currentHour, int currentMinute) {
+	int currentTimeInMinutes = currentHour * 60 + currentMinute;
+	int openTimeInMinutes = openHour * 60 + openMinute;
+	int closeTimeInMinutes = closeHour * 60 + closeMinute;
+
+	return (openTimeInMinutes <= currentTimeInMinutes && closeTimeInMinutes >= currentTimeInMinutes);
 }

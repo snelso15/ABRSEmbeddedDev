@@ -43,6 +43,10 @@ GtkWidget *bicycleReportProblemSuccessErrorOrLabel;
 GtkWidget *problemBicycleMenu2Label;
 GtkWidget *rentalErrorMessageLabel;
 GtkWidget *currentSystemTimeLabel;
+GtkWidget *OpeningTimeLabel;
+GtkWidget *ClosingTimeLabel;
+GtkWidget *CurrentTimeLabel;
+GtkWidget *ReopenTimeLabel;
 
 
 graphicalFunctions::graphicalFunctions(void)
@@ -582,8 +586,12 @@ gint graphicalFunctions::buildUI(){
 //	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"70\"><b>At This Time</b></span>");
 //	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 50, 500);
 
-	gtk_label_set_markup(GTK_LABEL(rentalErrorMessageLabel), "<span foreground=\"black\" font=\"550\"><b>Error Message</b></span>");
+	gtk_label_set_markup(GTK_LABEL(rentalErrorMessageLabel), "<span foreground=\"black\" font=\"55\"><b>Error Message</b></span>");
 	gtk_fixed_put (GTK_FIXED(centerFixed), rentalErrorMessageLabel, 0, 100);
+
+	ReopenTimeLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(ReopenTimeLabel), "<span foreground=\"black\" font=\"55\"><b>00:00 xm</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), ReopenTimeLabel, 190, 415);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
 
@@ -1180,6 +1188,91 @@ gint graphicalFunctions::buildUI(){
 	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
 
 
+
+	///////////////////////////////////////////////////////////////////////////
+	/////////////// Operating Hours screen
+	/////////////////////////////////////////////////////////////////////////////
+
+	////// center Operating Hours  //////
+	centerFixed = gtk_fixed_new();
+	label = gtk_label_new ("20");
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Bicycles are Rentable</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 62, 150);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Between the Hours of</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 62, 225);
+
+	OpeningTimeLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(OpeningTimeLabel), "<span foreground=\"black\" font=\"40\"><b>12:00 pm</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), OpeningTimeLabel, 100, 325);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>and</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 300, 325);
+
+	ClosingTimeLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(ClosingTimeLabel), "<span foreground=\"black\" font=\"40\"><b>12:00 pm</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), ClosingTimeLabel, 400, 325);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"40\"><b>Current Time is </b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), label1, 0, 425);
+
+	CurrentTimeLabel = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(ClosingTimeLabel), "<span foreground=\"black\" font=\"40\"><b>12:00 pm</b></span>");
+	gtk_fixed_put (GTK_FIXED(centerFixed), CurrentTimeLabel, 400, 425);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (centerNotebook), centerFixed, label);
+
+	////// left Operating Hours ///////
+	leftFixed = gtk_fixed_new();
+	label = gtk_label_new ("20");
+
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Bicycle Problem Menu</b></span>");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 155, 10);
+
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Tire</b></span>");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 57, UI_BUTTON_POSITION_1);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Seat</b></span>");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 55, UI_BUTTON_POSITION_2);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Wheel</b></span>");
+//	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 40, UI_BUTTON_POSITION_3);
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"55\"><b>Kiosk Operating Hours</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 140, 20);
+
+	label1 = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Back</b></span>");
+	gtk_fixed_put (GTK_FIXED(leftFixed), label1, 45, UI_BUTTON_POSITION_4);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (leftNotebook), leftFixed, label);
+
+
+	////// right Operating Hours  //////
+	label = gtk_label_new ("20");
+	rightFixed = gtk_fixed_new();
+
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Brake</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 50, UI_BUTTON_POSITION_1);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Other</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 50, UI_BUTTON_POSITION_2);
+//	label1 = gtk_label_new(NULL);
+//	gtk_label_set_markup(GTK_LABEL(label1), "<span foreground=\"black\" font=\"30\"><b>Cancel</b></span>");
+//	gtk_fixed_put (GTK_FIXED(rightFixed), label1, 40, UI_BUTTON_POSITION_4);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (rightNotebook), rightFixed, label);
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////// disable notebook tab headers
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -1400,8 +1493,9 @@ gint graphicalFunctions::drawSuccessPage(unsigned int bikeID, int racknum)
     return uiPageNum;
 }
 
-gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccessCode 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available
+gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccessCode 0 - success, 1 - bad code, 2 - unknown error, 3 - no charged bikes available, 9 - renting hours closed
 {
+	std::string reopenTimeString = "";
 	std::string failureMessageString;
 	switch (rentalSuccessCode) {
 //		case (1): {
@@ -1416,6 +1510,13 @@ gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccess
 			failureMessageString = "No Charged Bicycles\nCurrently Available";
 			break;
 		}
+		case (9): {
+			reopenTimeString = getTimeString(getOpeningTime_Hours(), getOpeningTime_Minutes());
+			failureMessageString = "   Kiosk Renting is\n   Currently Closed.\n   It Will reopen at";
+
+			printf(ANSI_COLOR_RED "reopenTimeString = %s" ANSI_COLOR_RESET "\n", reopenTimeString.c_str());
+			break;
+		}
 		default:
 			failureMessageString = "Invalid Code\nRequest a New Code\nOr Try Again";// "Unknown Error";
 			break;
@@ -1427,6 +1528,12 @@ gint graphicalFunctions::drawFailurePage(int rentalSuccessCode) // rentalSuccess
 	char* markup = g_markup_printf_escaped(format, failureMessageString.data());// g_print("i\n");
 	gtk_label_set_markup(GTK_LABEL(rentalErrorMessageLabel), markup);
 	g_free (markup);
+
+	gtk_label_set_text(GTK_LABEL(ReopenTimeLabel), reopenTimeString.data()); //g_print("g\n");
+	const char *format1 = "<span foreground=\"black\" font=\"60\"><b>%s</b></span>"; //g_print("h\n");
+	char* markup1 = g_markup_printf_escaped(format1, reopenTimeString.data());// g_print("i\n");
+	gtk_label_set_markup(GTK_LABEL(ReopenTimeLabel), markup1);
+	g_free (markup1);
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 8);
     gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 8);
@@ -1781,6 +1888,61 @@ gint graphicalFunctions::drawNetworkConnectionDownPage(void)
     return uiPageNum;
 }
 
+gint graphicalFunctions::drawOperatingHoursPage(void)
+{
+	//printf(")))))))))))))))))  %s  ((((((((((((((((((", openingTime.data());
+
+//	int hours = getCurrentTime_Hours();
+//	int minutes = getCurrentTime_Minutes();
+//	char am_pm[3];
+//
+//	if (hours > 12) {
+//		hours = hours % 12;
+//		sprintf(am_pm, "%s","pm");
+//	} else {
+//		sprintf(am_pm, "%s", "am");
+//	}
+//
+//	char currentTime[30];
+//
+//	if (minutes < 10) {
+//		sprintf(currentTime, "%d:0%d %s", hours, minutes, am_pm);
+//	} else {
+//		sprintf(currentTime, "%d:%d %s", hours, minutes, am_pm);
+//	}
+//	std::string currentTimeString = currentTime;
+
+	std::string openTimeString = getTimeString(getOpeningTime_Hours(), getOpeningTime_Minutes());
+	std::string closeTimeString = getTimeString(getClosingTime_Hours(), getClosingTime_Minutes());
+	std::string currentTimeString = getTimeString(getCurrentTime_Hours(), getCurrentTime_Minutes());
+
+	gtk_label_set_text(GTK_LABEL(OpeningTimeLabel),  openTimeString.data());
+	const char *format1 = "<span foreground=\"black\" font=\"36\"><b>%s</b></span>";
+	char* markup1 = g_markup_printf_escaped(format1, openTimeString.data());
+	gtk_label_set_markup(GTK_LABEL(OpeningTimeLabel), markup1);
+	g_free (markup1);
+
+	gtk_label_set_text(GTK_LABEL(ClosingTimeLabel),  closeTimeString.data());
+	const char *format2 = "<span foreground=\"black\" font=\"36\"><b>%s</b></span>";
+	char* markup2 = g_markup_printf_escaped(format2, closeTimeString.data());
+	gtk_label_set_markup(GTK_LABEL(ClosingTimeLabel), markup2);
+	g_free (markup2);
+
+	gtk_label_set_text(GTK_LABEL(CurrentTimeLabel),  currentTimeString.data());
+	const char *format3 = "<span foreground=\"black\" font=\"36\"><b>%s</b></span>";
+	char* markup3 = g_markup_printf_escaped(format3, currentTimeString.data());
+	gtk_label_set_markup(GTK_LABEL(CurrentTimeLabel), markup3);
+	g_free (markup3);
+
+
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (centerNotebook), 20);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (leftNotebook), 20);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (rightNotebook), 20);
+    gint uiPageNum = gtk_notebook_get_current_page(GTK_NOTEBOOK(centerNotebook));
+
+    return uiPageNum;
+}
+
 
 gint graphicalFunctions::printSomething(void)
 {
@@ -1838,8 +2000,7 @@ void graphicalFunctions::updateUI(char key){
 					key = 'z';
 					break;
 //				case 'd':
-//					setuiPageNum(drawNetworkConnectionDownPage());
-//					key = 'z';
+//
 //					break;
 //				case 'e':  // Report Problem
 //					setuiPageNum(drawReportProblemPage());
@@ -1850,6 +2011,8 @@ void graphicalFunctions::updateUI(char key){
 					key = 'z';
 					break;
 				case 'g': // Operating Hours
+					setuiPageNum(drawOperatingHoursPage());
+					key = 'z';
 					break;
 				case 'h':
 					break;
@@ -2313,6 +2476,19 @@ void graphicalFunctions::updateUI(char key){
 			}
 			default:
 				break;
+		}
+		case (20): // drawOperatingHoursPage
+		{
+				switch (key) {
+				case 'd':
+				{
+					setuiPageNum(drawWelcomePage());
+					key = 'z';
+					break;
+				}
+				default:
+					break;
+			}
 		}
 		default:
 			break;

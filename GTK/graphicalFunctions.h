@@ -55,13 +55,20 @@ class graphicalFunctions
 		std::string highTemp = "";
 		std::string lowTemp = "";
 		std::string weatherIconName = "";
+		std::string closingTime = "";
+		std::string openingTime = "";
 
 		int bikeRackNumber = 0;
 		int bikeReturnRackNumber = 0;
 
 		int currentTime_Hours = 12;
-
 		int currentTime_Minutes = 0;
+
+		int openingTime_Hours = 7;
+		int openingTime_Minutes = 30;
+
+		int closingTime_Hours = 21;
+		int closingTime_Minutes = 30;
 
 		BIKE_CONDITION_CODE bikeCode = NO_ISSUES;
 
@@ -97,7 +104,7 @@ class graphicalFunctions
 		gint drawOnlineRentHelpPageStepOne(void);
 		gint drawOnlineRentHelpPageStepTwo(void);
 		gint drawNetworkConnectionDownPage(void);
-
+		gint drawOperatingHoursPage(void);
 
 		//getters/setters
 		GtkWidget* getMainWindow(){
@@ -136,6 +143,15 @@ class graphicalFunctions
 			weatherIconName = name;
 		}
 
+		void setClosingTime(std::string functionClosingTime) {
+			closingTime = functionClosingTime;
+		}
+
+		void setOpeningtime(std::string functionOpeningTime) {
+			openingTime = functionOpeningTime;
+		}
+
+
 		void setCurrentTime_Hours(int hour) {
 			currentTime_Hours = hour;
 		}
@@ -151,6 +167,40 @@ class graphicalFunctions
 		int getCurrentTime_Minutes(void) {
 			return currentTime_Minutes;
 		}
+
+		void setOpeningTime_Hours(int hour) {
+			openingTime_Hours = hour;
+		}
+
+		int getOpeningTime_Hours(void) {
+			return openingTime_Hours;
+		}
+
+		void setOpeningtTime_Minutes(int minute) {
+			openingTime_Minutes = minute;
+		}
+
+		int getOpeningTime_Minutes(void) {
+			return openingTime_Minutes;
+		}
+
+		void setClosingTime_Hours(int hour) {
+			closingTime_Hours = hour;
+		}
+
+		int getClosingTime_Hours(void) {
+			return closingTime_Hours;
+		}
+
+		void setClosingTime_Minutes(int minute) {
+			closingTime_Minutes = minute;
+		}
+
+		int getClosingTime_Minutes(void) {
+			return closingTime_Minutes;
+		}
+
+
 
 		int getBikeRackNumber(void)
 		{
@@ -191,6 +241,27 @@ class graphicalFunctions
 		  size_t sizeOfThisString = inputString.length();
 		  int bytesOfThisString = static_cast<int>(sizeOfThisString);
 		  return bytesOfThisString;
+		}
+
+		std::string getTimeString(int hours, int minutes){
+			char am_pm[10];
+
+			if (hours > 12) {
+				hours = hours % 12;
+				sprintf(am_pm, "%s","pm");
+			} else {
+				sprintf(am_pm, "%s", "am");
+			}
+
+			char currentTime[30];
+
+			if (minutes < 10) {
+				sprintf(currentTime, "%d:0%d %s", hours, minutes, am_pm);
+			} else {
+				sprintf(currentTime, "%d:%d %s", hours, minutes, am_pm);
+			}
+			std::string currentTimeString = currentTime;
+			return currentTimeString.c_str();
 		}
 };
 

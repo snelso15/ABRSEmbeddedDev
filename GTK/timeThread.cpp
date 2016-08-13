@@ -140,18 +140,26 @@ void updateTimes() {
 	//getClosingTime();
 	//getCurrentSystemTimeString_Hours();
 	//getCurrentSystemTimeString_Minutes();
-	kioskTimeData.openingTime = getOpeningTime();
-	kioskTimeData.closingTime = getClosingTime();
-	kioskTimeData.openingTime_Hours = getIntOpeningTime_Hours(kioskTimeData.openingTime);
-	kioskTimeData.openingTime_Minutes = getIntOpeningTime_Minutes(kioskTimeData.openingTime);
-	kioskTimeData.closingTime_Hours = getIntClosingTime_Hours(kioskTimeData.closingTime);
-	kioskTimeData.closingTime_Minutes = getIntClosingTime_Minutes(kioskTimeData.closingTime);
+	//kioskTimeData.openingTime = getOpeningTime();
+	//kioskTimeData.closingTime = getClosingTime();
+//	kioskTimeData.openingTime_Hours = getIntOpeningTime_Hours(kioskTimeData.openingTime);
+//	kioskTimeData.openingTime_Minutes = getIntOpeningTime_Minutes(kioskTimeData.openingTime);
+//	kioskTimeData.closingTime_Hours = getIntClosingTime_Hours(kioskTimeData.closingTime);
+//	kioskTimeData.closingTime_Minutes = getIntClosingTime_Minutes(kioskTimeData.closingTime);
 	kioskTimeData.currentTime_Hours = getIntCurrentSystemTime_Hours(getCurrentSystemTimeString_Hours());
 	kioskTimeData.currentTime_Minutes = getIntCurrentSystemTime_Minutes(getCurrentSystemTimeString_Minutes());
 }
 
 //returns void* so that you can pass data back to calling function if necessary
 void* timeStatusThreadUpdateThreadRoutine(void* nullPointer){
+
+	kioskTimeData.openingTime = getOpeningTime();
+	kioskTimeData.closingTime = getClosingTime();
+	kioskTimeData.openingTime_Hours = getIntOpeningTime_Hours(kioskTimeData.openingTime);
+	kioskTimeData.openingTime_Minutes = getIntOpeningTime_Minutes(kioskTimeData.openingTime);
+	kioskTimeData.closingTime_Hours = getIntClosingTime_Hours(kioskTimeData.closingTime);
+	kioskTimeData.closingTime_Minutes = getIntClosingTime_Minutes(kioskTimeData.closingTime);
+
 	while(1){
 		updateTimes();
 		sleep (20); //update every minute
