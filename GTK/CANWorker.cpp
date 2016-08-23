@@ -54,7 +54,7 @@ void CANWorker::processTasks() {
 
 	///////////////
 	//DEBUG
-	logText.append("CW - priocess unhandled returns");
+	logText.append("CW - process unhandled returns");
 	LOG();
 	///////////////
 
@@ -65,9 +65,6 @@ void CANWorker::processTasks() {
 	logText.append("CW - Done Iteration");
 	LOG();
 	///////////////
-
-
-
 }
 
 void CANWorker::processUnlockBikeAck(CANMsg msg){
